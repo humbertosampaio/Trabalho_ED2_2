@@ -5,10 +5,13 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(Trabalho_ED2_2
         Headers/Answer.h
+        Headers/BinaryTree.h
         Headers/FileUtils.h
+        Headers/Node.h
         Headers/Question.h
         Headers/Tag.h
         Source/Answer.cpp
+        Source/BinaryTree.cpp
         Source/FileUtils.cpp
         Source/Question.cpp
         Source/Tag.cpp
