@@ -109,7 +109,7 @@ void FileUtils::readFileTag(string path, vector<Tag> &tagList)
 
 	if (file.is_open())
 	{
-        clock_t tStart = clock();
+
         int registriesCount = 0;
 		string tag;
 		int questionId;
@@ -159,7 +159,6 @@ void FileUtils::readFileAnswer(string path, vector<Answer> &answerList)
 	if (file.is_open())
 	{
 		//variavel para calcular tempo de execucao
-		clock_t tStart = clock();
 
 		//lendo o arquivo em blocos de 4MB
 		unsigned int length = 4 * 1024 * 1024;
@@ -309,7 +308,6 @@ void FileUtils::showTop()
     cout << "            -  -  Trabalho de Estrutura de Dados 2  -  -" << endl;
     cout << "            --------------------------------------------" << endl;
     cout << "         --------------------------------------------------" << endl;
-    cout << "         ---------       ---   GRUPO 5   ---    -----------" << endl;
     cout << "         ---------          -> AUTORES <-         ---------" << endl;
     cout << "         --------            Edson Lopes        -----------" << endl;
     cout << "         --------         Humberto Sampaio          -------" << endl;
