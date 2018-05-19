@@ -16,6 +16,10 @@
 #include "Question.h"
 #include "Tag.h"
 #include "Answer.h"
+#include <iostream>
+#include <limits>
+#include <random>
+#include <chrono>
 
 using namespace std;
 

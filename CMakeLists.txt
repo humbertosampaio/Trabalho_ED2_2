@@ -15,4 +15,4 @@ add_executable(Trabalho_ED2_2
         Source/FileUtils.cpp
         Source/Question.cpp
         Source/Tag.cpp
-        main.cpp)
+        main.cpp Source/AvlTree.cpp Headers/AvlTree.h Headers/NodeAvl.h)

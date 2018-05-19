@@ -1,6 +1,10 @@
-#include <iostream>
-#include <limits>
+#include <cstring>
 #include "Headers/FileUtils.h"
+#include "Headers/AvlTree.h"
+
+/// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
+
+
 
 using namespace std;
 
@@ -38,8 +42,64 @@ struct Variables
     }
 };
 
+
+void tests()
+{
+    AvlTree avltree;
+    auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+    //seed = 1;
+    mt19937 eng(seed);
+    uniform_int_distribution<int> dist(0,100);
+
+    for(int i = 0; i<20; i++)
+    {
+        int insert = dist(eng);
+        cout << "inserir " << insert << endl;
+        avltree.insert(insert);
+    }
+    avltree.printByLevel();
+    cout << "preorder: ";
+    avltree.printByOrder(PRE_ORDER);
+
+    /*for(int i = 0; i<2; i++)
+    {
+       int rm = dist(eng);
+        cout << "Remove " << rm << endl;
+        avltree.remove(rm);
+    }*/
+    avltree.remove(30);
+    avltree.remove(72);
+    avltree.remove(12);
+    avltree.remove(0);
+    avltree.remove(54);
+    avltree.remove(18);
+    avltree.remove(34);
+    avltree.remove(100);
+
+
+    if(avltree.busca(94))
+        cout << "VALOR " << 94 << " ENCONTRADO!!!!!!!!!" << endl;
+    else
+        cout << "VALOR " << 94 << " NAO ENCONTRADO!!!!!!!!!" << endl;
+
+    if(avltree.busca(30))
+        cout << "VALOR " << 30 << " ENCONTRADO!!!!!!!!!" << endl;
+    else
+        cout << "VALOR " << 30 << " NAO ENCONTRADO!!!!!!!!!" << endl;
+
+    cout << "preorder: ";
+    avltree.printByOrder(PRE_ORDER);
+    avltree.printByLevel();
+}
+
 int main(int argc, char** argv)
 {
+    if(argc == 2 && !strcmp(argv[1], "test"))
+    {
+        tests();
+        return 0;
+    }
+
     ofstream saida;
     saida.open("saida.txt", ios::app);
     saida << left << setw(12)<< left << "frequencia" << setw(12) << "Tags\n";
