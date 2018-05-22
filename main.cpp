@@ -1,6 +1,6 @@
 #include <cstring>
 #include "Headers/FileUtils.h"
-#include "Headers/AvlTree.h"
+#include "Source/AvlTree.cpp"
 
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
 
@@ -45,6 +45,7 @@ struct Variables
 
 void tests()
 {
+    /*
     AvlTree avltree;
     auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
     //seed = 1;
@@ -61,12 +62,12 @@ void tests()
     cout << "preorder: ";
     avltree.printByOrder(PRE_ORDER);
 
-    /*for(int i = 0; i<2; i++)
+    for(int i = 0; i<2; i++)
     {
        int rm = dist(eng);
         cout << "Remove " << rm << endl;
         avltree.remove(rm);
-    }*/
+    }
     avltree.remove(30);
     avltree.remove(72);
     avltree.remove(12);
@@ -89,7 +90,18 @@ void tests()
 
     cout << "preorder: ";
     avltree.printByOrder(PRE_ORDER);
-    avltree.printByLevel();
+    avltree.printByLevel()*/
+}
+
+void testEdson()
+{
+    AvlTree<int> a;
+    a.insert(10);
+    a.insert(-40);
+    a.insert(30);
+    a.print();
+    a.remove(-40);
+    a.print();
 }
 
 int main(int argc, char** argv)
@@ -97,6 +109,11 @@ int main(int argc, char** argv)
     if(argc == 2 && !strcmp(argv[1], "test"))
     {
         tests();
+        return 0;
+    }
+    else if(argc == 2 && !strcmp(argv[1], "testedson"))
+    {
+        testEdson();
         return 0;
     }
 

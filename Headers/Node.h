@@ -10,23 +10,21 @@
 using namespace std;
 
 template <class T> class Node {
-private:
-    T data;
-    Node* right;
-    Node* left;
+protected:
+    T value;
+    Node<T>* right;
+    Node<T>* left;
     unsigned int height;
 public:
-    void test ()
-    {
-        cout << data;
-    }
+    Node<T>(T data);
+    void setRight(Node<T>* right);
+    void setLeft(Node<T>* left);
+    T getValue();
 
-    Node<T>(T data)
-    {
-        this->data = data;
-        this->right = nullptr;
-        this->left = nullptr;
-        this->height = 0;
-    }
+    Node<T> *getRight() const;
+
+    Node<T> *getLeft() const;
+
+    void setValue(T value);
 };
 #endif //TREES_NODE_H

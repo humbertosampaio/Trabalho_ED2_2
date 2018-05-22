@@ -8,13 +8,26 @@
 #include "Node.h"
 
 template <class T> class BinaryTree {
-private:
-    Node<T>* root;
 
 public:
     BinaryTree<T>();
-    virtual void insert(Node<T> node);
-    virtual void remove(T value);
+    virtual void insert (T value);
+    Node<T>* search(T value);
+    void remove (T value);
+    void print ();
+
+private:
+    Node<T>* root;
+
+private: //funcoes auxiliares
+    Node<T>* auxInsert(Node<T>* node, T value);
+    Node<T>* auxSearch(Node<T>* root, T value);
+    Node<T>* auxRemove(Node<T>* node, T value);
+    Node<T>* removeLeaf(Node<T>* node);
+    Node<T>* remove1Son(Node<T>* node);
+    Node<T>* menorSubArvDireita(Node<T>* node);
+    void printByLevel(Node<T>* node, int level);
+
 };
 
 #endif //TREES_BINARYTREE_H

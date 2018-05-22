@@ -10,21 +10,26 @@
 #define POST_ORDER 3
 
 #include "NodeAvl.h"
+#include "../Source/BinaryTree.cpp"
 
-class AvlTree {
+template <class T> class AvlTree : public BinaryTree<T> {
 public:
     AvlTree();
     virtual ~AvlTree();
+
+    void clear();
+    /*
     void insert(int val);
     void remove(int val);
     bool busca(int val);
-    void clear();
     void printByLevel();
     void printByOrder(int caseOrder);
     //NodeAvl* getRaiz() { return raiz; }
-
+    */
 private:
+
     NodeAvl* raiz;
+    /*
     NodeAvl* auxInsere(NodeAvl *no, int val);
     NodeAvl *auxRemove(NodeAvl *no, int val);
     bool auxBusca(NodeAvl *p, int val);
@@ -40,7 +45,9 @@ private:
     void postOrder(NodeAvl *p);
     void inOrder(NodeAvl *p);
     void preOrder(NodeAvl *p);
+     */
     NodeAvl * clear(NodeAvl *raiz);
+
 };
 
 
