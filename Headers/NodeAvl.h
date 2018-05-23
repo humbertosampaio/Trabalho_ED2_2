@@ -5,15 +5,13 @@
 #ifndef TRABALHO_ED2_2_NODEAVL_H
 #define TRABALHO_ED2_2_NODEAVL_H
 
-class NodeAvl
+#include "../Source/Node.cpp"
+
+template <class T> class NodeAvl : public Node<T>
 {
 public:
-    explicit NodeAvl(int &val) 
-    { 
-        chave = val;
-        altura = 1;
-        esq = nullptr;
-        dir  = nullptr;
+    explicit NodeAvl(T &val):Node<T>(val)
+    {
     }
     virtual ~NodeAvl() = default;
     int getAltura()
@@ -21,23 +19,27 @@ public:
         if(this == nullptr)
             return 0;
         else
-            return altura;
+            return height;
     }
-    NodeAvl* getEsq() { return  esq; }
-    NodeAvl* getDir() { return  dir; }
-    int getChave() { return chave; }
-    void setAltura(int altura) { this->altura = altura; }
-    void setEsq(NodeAvl *no) { esq = no; }
-    void setDir(NodeAvl *no) { dir = no; }
-    void setChave(int val) { chave = val; }
+    void setHeight(int height)
+    {
+        this->height = height;
+    }
+    int getHeight()
+    {
+        return this->height;
+    }
+    NodeAvl<T> *getRight()
+    {
+        return (NodeAvl<T>*)this->right;
+    }
+    NodeAvl<T> *getLeft()
+    {
+        return (NodeAvl<T>*)this->left;
+    }
 
-
-private:
-    NodeAvl *esq;
-    NodeAvl *dir;
-    int chave;
-    int altura;
-
+public:
+    int height;
 };
 
 #endif //TRABALHO_ED2_2_NODEAVL_H

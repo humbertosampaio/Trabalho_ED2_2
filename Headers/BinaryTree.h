@@ -11,16 +11,20 @@ template <class T> class BinaryTree {
 
 public:
     BinaryTree<T>();
-    virtual void insert (T value);
+    virtual void insert (Node<T>* value);
     Node<T>* search(T value);
     void remove (T value);
     void print ();
 
-private:
+protected:
     Node<T>* root;
+    Node<T>* leftRotate(Node<T> *y);
+    Node<T>* rightRotate(Node<T> *y);
+    Node<T>* rightLeftRotate(Node<T> *y);
+    Node<T>* leftRightRotate(Node<T> *y);
 
 private: //funcoes auxiliares
-    Node<T>* auxInsert(Node<T>* node, T value);
+    Node<T>* auxInsert(Node<T>* node, Node<T>* value);
     Node<T>* auxSearch(Node<T>* root, T value);
     Node<T>* auxRemove(Node<T>* node, T value);
     Node<T>* removeLeaf(Node<T>* node);

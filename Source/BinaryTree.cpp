@@ -3,7 +3,6 @@
 //
 
 #include "../Headers/BinaryTree.h"
-#include "Node.cpp"
 
 template<class T>
 BinaryTree<T>::BinaryTree()
@@ -12,23 +11,20 @@ BinaryTree<T>::BinaryTree()
 }
 
 template<class T>
-void BinaryTree<T>::insert(T value)
+void BinaryTree<T>::insert(Node<T>* value)
 {
     root = auxInsert(root, value);
 }
 
 template<class T>
-Node<T>* BinaryTree<T>::auxInsert(Node<T> *node, T value)
+Node<T>* BinaryTree<T>::auxInsert(Node<T>* node, Node<T>* value)
 {
     if(node == nullptr)
-    {
-        node = new Node<T>(value);
-        node->setLeft(nullptr);
-        node->setRight(nullptr);
-    }
-    else if(value < node->getValue())
+        node = value;
+
+    else if(value->getValue() < node->getValue())
         node->setLeft(auxInsert(node->getLeft(), value));
-    else
+    else if (value->getValue() > node->getValue())
         node->setRight(auxInsert(node->getRight(), value));
     return node;
 }
@@ -132,4 +128,41 @@ void BinaryTree<T>::printByLevel(Node<T> *p, int level)
         printByLevel(p->getLeft(), level+1);
         printByLevel(p->getRight(), level+1);
     }
+}
+
+// Left Left Case (RotacaoRR)
+template <class T>
+Node<T>* BinaryTree<T>::leftRotate(Node<T> *raiz)
+{
+    Node<T>* no = raiz->getRight();
+    raiz->setRight(no->getLeft());
+    no->setLeft(raiz);
+    return no;
+
+}
+
+// Left Left Case (RotacaoLL)
+template <class T>
+Node<T>* BinaryTree<T>::rightRotate(Node<T> *y)
+{
+    Node<T>* x = y->getLeft();
+    y->setLeft(x->getRight());
+    x->setRight(y);
+    return x;
+}
+
+// Left Right Case (RotacaoLR)
+template <class T>
+Node<T>* BinaryTree<T>::leftRightRotate(Node<T> *y)
+{
+    y->setLeft(leftRotate(y->getLeft()));
+    return rightRotate(y);
+}
+
+// Right Left Case (RotacaoRL)
+template <class T>
+Node<T>* BinaryTree<T>::rightLeftRotate(Node<T> *y)
+{
+    y->setRight(rightRotate(y->getRight()));
+    return leftRotate(y);
 }

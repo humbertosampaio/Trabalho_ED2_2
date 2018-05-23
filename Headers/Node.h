@@ -14,16 +14,14 @@ protected:
     T value;
     Node<T>* right;
     Node<T>* left;
-    unsigned int height;
 public:
     Node<T>(T data);
     void setRight(Node<T>* right);
     void setLeft(Node<T>* left);
     T getValue();
 
-    Node<T> *getRight() const;
-
-    Node<T> *getLeft() const;
+    virtual Node<T> *getRight() = 0;
+    virtual Node<T> *getLeft() = 0;
 
     void setValue(T value);
 };

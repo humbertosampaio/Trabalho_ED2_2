@@ -95,13 +95,16 @@ void tests()
 
 void testEdson()
 {
-    AvlTree<int> a;
-    a.insert(10);
-    a.insert(-40);
-    a.insert(30);
-    a.print();
-    a.remove(-40);
-    a.print();
+    AvlTree<Question> bt("a");
+    string s[6] = {"3","2","3","4","5","6"};
+    string t[6] = {"2","2","3","4","5","6"};
+    string v[6] = {"1","2","3","4","5","6"};
+    Question a(s);
+    Question b(t);
+    Question c(v);
+    bt.insert(a);
+    bt.insert(b);
+    bt.insert(c);
 }
 
 int main(int argc, char** argv)
