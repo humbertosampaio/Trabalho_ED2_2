@@ -95,18 +95,32 @@ void tests()
 
 void testEdson()
 {
-    AvlTree<int> a;
+    /*AvlTree<int> a;
     a.insert(10);
     a.insert(-40);
     a.insert(30);
     a.print();
     a.remove(-40);
-    a.print();
+    a.print();*/
+}
+
+void testHumberto()
+{
+	AvlTree<int>* a = new AvlTree<int>();
+	a->insert(1);
+	a->insert(10);
+	a->insert(-40);
+	a->insert(30);
+	a->insert(-50);
+	a->print();
+	a->remove(-40);
+	a->print();
+	system("pause");
 }
 
 int main(int argc, char** argv)
 {
-    if(argc == 2 && !strcmp(argv[1], "test"))
+    /*if(argc == 2 && !strcmp(argv[1], "test"))
     {
         tests();
         return 0;
@@ -152,6 +166,8 @@ int main(int argc, char** argv)
     if(vars.tagVector.empty())
         FileUtils::readFileTag(vars.tagPath, vars.tagVector);
     if(vars.answerVector.empty())
-        FileUtils::readFileAnswer(vars.answerPath, vars.answerVector);
+        FileUtils::readFileAnswer(vars.answerPath, vars.answerVector);*/
+	testHumberto();
+
     return 0;
 }

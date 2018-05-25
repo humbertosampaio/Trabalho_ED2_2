@@ -9,22 +9,25 @@
 
 using namespace std;
 
-template <class T> class Node {
-protected:
-    T value;
-    Node<T>* right;
-    Node<T>* left;
-    unsigned int height;
-public:
-    Node<T>(T data);
-    void setRight(Node<T>* right);
-    void setLeft(Node<T>* left);
-    T getValue();
+template <class T> class Node
+{
+	protected:
+	T value;
+	Node<T>* right;
+	Node<T>* left;
 
-    Node<T> *getRight() const;
+	public:
+	Node<T>() = default;
+	Node<T>(T data);
+	~Node<T>() = default;
+	void setRight(Node<T>* right);
+	void setLeft(Node<T>* left);
+	T getValue();
 
-    Node<T> *getLeft() const;
+	Node<T> *getRight();
 
-    void setValue(T value);
+	Node<T> *getLeft();
+
+	void setValue(T value);
 };
 #endif //TREES_NODE_H

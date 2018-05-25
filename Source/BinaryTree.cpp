@@ -8,6 +8,7 @@
 template<class T>
 BinaryTree<T>::BinaryTree()
 {
+	cout << "Construindo Binary Tree" << endl;
     root = nullptr;
 }
 
@@ -54,7 +55,7 @@ Node<T>* BinaryTree<T>::auxSearch(Node<T>* root, T value)
 }
 
 template <class T>
-void BinaryTree<T>::remove (T value)
+void BinaryTree<T>::remove(T value)
 {
     auxRemove(root, value);
 }
@@ -126,8 +127,7 @@ void BinaryTree<T>::printByLevel(Node<T> *p, int level)
     {
         cout << "(" << level << ")";
         for(int i = 1; i <= level; i++)
-            cout << "--";
-        cout << " ";
+			cout << "#";
         cout << p->getValue() << endl;
         printByLevel(p->getLeft(), level+1);
         printByLevel(p->getRight(), level+1);

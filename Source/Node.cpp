@@ -9,37 +9,40 @@ template<class T> Node<T>::Node(T data)
     this->value = data;
     this->right = nullptr;
     this->left = nullptr;
-    this->height = 0;
 }
 
 template<class T>
-void Node<T>::setRight(Node<T>* right)
+Node<T>* Node<T>::getRight()
 {
-    this->right = right;
+	return right;
 }
 
 template<class T>
-void Node<T>::setLeft(Node<T>* left)
+void Node<T>::setRight(Node<T>* node)
 {
-    this->left = left;
+    this->right = node;
 }
 
-template<class T> T Node<T>::getValue()
+template<class T>
+Node<T>* Node<T>::getLeft()
+{
+	return left;
+}
+
+template<class T>
+void Node<T>::setLeft(Node<T>* node)
+{
+    this->left = node;
+}
+
+template<class T> 
+T Node<T>::getValue()
 {
     return value;
 }
 
 template<class T>
-Node<T> *Node<T>::getRight() const {
-    return right;
-}
-
-template<class T>
-Node<T> *Node<T>::getLeft() const {
-    return left;
-}
-
-template<class T>
-void Node<T>::setValue(T value) {
-    Node::value = value;
+void Node<T>::setValue(T value)
+{
+	Node::value = value;
 }
