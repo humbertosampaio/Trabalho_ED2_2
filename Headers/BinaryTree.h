@@ -2,8 +2,8 @@
 // Created by edson on 15/05/18.
 //
 
-#ifndef TREES_BINARYTREE_H
-#define TREES_BINARYTREE_H
+#ifndef BINARYTREE_H
+#define BINARYTREE_H
 
 #include "Node.h"
 
@@ -29,5 +29,7 @@ template <class T> class BinaryTree
 	void printByLevel(Node<T>* node, int level);
 
 };
+
+#include "../Source/BinaryTree.cpp"
 
 #endif //TREES_BINARYTREE_H

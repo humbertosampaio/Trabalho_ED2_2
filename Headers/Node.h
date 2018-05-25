@@ -2,8 +2,8 @@
 // Created by edson on 15/05/18.
 //
 
-#ifndef TREES_NODE_H
-#define TREES_NODE_H
+#ifndef NODE_H
+#define NODE_H
 
 #include <iostream>
 
@@ -17,7 +17,7 @@ template <class T> class Node
 	Node<T>* left;
 
 	public:
-	Node<T>() = default;
+	Node<T>();
 	Node<T>(T data);
 	~Node<T>() = default;
 	void setRight(Node<T>* right);
@@ -30,4 +30,7 @@ template <class T> class Node
 
 	void setValue(T value);
 };
+
+#include "../Source/Node.cpp"
+
 #endif //TREES_NODE_H

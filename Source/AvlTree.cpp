@@ -2,21 +2,21 @@
 // Created by viniman on 5/19/18.
 //
 
-/// AVL Ã© uma Ã¡rvore binÃ¡ria balanceada
+/// AVL é uma árvore binária balanceada
 /// fb = fator de balanceamento
 /// hd - he = {0, 1, -1}
 /// Rotacoes simples e duplas
 
 /** REMOCAO
- *  3 Tipos de rotaÃ§Ã£o:
- *  - nÃ³ folha (sem filhos)
- *  - nÃ³ com 1 filho
- *  - nÃ³ com 2 filhos
- *  - NÃ£o se pode remover de uma Ã¡rvore vazia
- *  - Removendo o Ãºltimo nÃ³, a Ã¡rvore fica vazia
+ *  3 Tipos de rotação:
+ *  - nó folha (sem filhos)
+ *  - nó com 1 filho
+ *  - nó com 2 filhos
+ *  - Não se pode remover de uma árvore vazia
+ *  - Removendo o último nó, a árvore fica vazia
  *
  *  Balanceamento:
- *  - Remover um nÃ³ de um lado equivale a "inserir" um nÃ³ na outra subarvore
+ *  - Remover um nó de um lado equivale a "inserir" um nó na outra subarvore
  *
  */
 

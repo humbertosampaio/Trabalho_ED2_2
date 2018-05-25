@@ -2,7 +2,16 @@
 // Created by edson on 18/05/18.
 //
 
+#ifndef NODE_CPP
+#define NODE_CPP
+
 #include "../Headers/Node.h"
+
+template<class T> Node<T>::Node()
+{
+    this->left = nullptr;
+    this->right = nullptr;
+}
 
 template<class T> Node<T>::Node(T data)
 {
@@ -46,3 +55,5 @@ void Node<T>::setValue(T value)
 {
 	Node::value = value;
 }
+
+#endif

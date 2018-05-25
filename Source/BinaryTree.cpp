@@ -2,8 +2,10 @@
 // Created by edson on 15/05/18.
 //
 
+#ifndef BINARYTREE_CPP
+#define BINARYTREE_CPP
+
 #include "../Headers/BinaryTree.h"
-#include "Node.cpp"
 
 template<class T>
 BinaryTree<T>::BinaryTree()
@@ -133,3 +135,7 @@ void BinaryTree<T>::printByLevel(Node<T> *p, int level)
         printByLevel(p->getRight(), level+1);
     }
 }
+
+#include "../Source/BinaryTree.cpp"
+
+#endif

@@ -1,5 +1,7 @@
 #include <cstring>
 #include "Headers/FileUtils.h"
+#include "Source/BinaryTree.cpp"
+#include "Source/SplayTree.cpp"
 #include "Source/AvlTree.cpp"
 
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
@@ -115,12 +117,23 @@ void testHumberto()
 	a->print();
 	a->remove(-40);
 	a->print();
+
+	cout << endl;
+	SplayTree<int>* b = new SplayTree<int>();
+	b->insert(1);
+	b->insert(10);
+	b->insert(-40);
+	b->insert(30);
+	b->insert(-50);
+	b->print();
+	b->remove(-40);
+	b->print();
 	system("pause");
 }
 
 int main(int argc, char** argv)
 {
-    /*if(argc == 2 && !strcmp(argv[1], "test"))
+    if(argc == 2 && !strcmp(argv[1], "test"))
     {
         tests();
         return 0;
@@ -130,6 +143,16 @@ int main(int argc, char** argv)
         testEdson();
         return 0;
     }
+    else if ( argc == 2 && !strcmp(argv[1], "testluis"))
+    {
+        /*testLuis();*/
+        return 0;
+    }
+	else if (argc == 1)
+	{
+		testHumberto();
+		return 0;
+	}
 
     ofstream saida;
     saida.open("saida.txt", ios::app);
@@ -166,8 +189,6 @@ int main(int argc, char** argv)
     if(vars.tagVector.empty())
         FileUtils::readFileTag(vars.tagPath, vars.tagVector);
     if(vars.answerVector.empty())
-        FileUtils::readFileAnswer(vars.answerPath, vars.answerVector);*/
-	testHumberto();
-
+        FileUtils::readFileAnswer(vars.answerPath, vars.answerVector);
     return 0;
 }
