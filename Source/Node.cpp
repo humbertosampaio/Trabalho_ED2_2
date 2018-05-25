@@ -4,6 +4,12 @@
 
 #include "../Headers/Node.h"
 
+template<class T> Node<T>::Node()
+{
+    this->left = nullptr;
+    this->right = nullptr;
+}
+
 template<class T> Node<T>::Node(T data)
 {
     this->value = data;

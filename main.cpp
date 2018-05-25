@@ -1,6 +1,7 @@
 #include <cstring>
 #include "Headers/FileUtils.h"
-#include "Source/AvlTree.cpp"
+#include "Source/BinaryTree.cpp"
+#include "Source/SplayTree.cpp"
 
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
 
@@ -95,13 +96,23 @@ void tests()
 
 void testEdson()
 {
-    AvlTree<int> a;
-    a.insert(10);
-    a.insert(-40);
-    a.insert(30);
-    a.print();
-    a.remove(-40);
-    a.print();
+}
+
+void testLuis()
+{
+    SplayTree<int> *sp = new SplayTree<int>;
+    sp->insert(10);
+    sp->insert(50);
+    sp->insert(100);
+    sp->insert(15);
+    sp->insert(47);
+    sp->remove(1);
+    sp->search(100);
+
+    //cout << sp->search(10) << endl;
+
+    sp->print();
+
 }
 
 int main(int argc, char** argv)
@@ -114,6 +125,11 @@ int main(int argc, char** argv)
     else if(argc == 2 && !strcmp(argv[1], "testedson"))
     {
         testEdson();
+        return 0;
+    }
+    else if ( argc == 2 && !strcmp(argv[1], "testluis"))
+    {
+        testLuis();
         return 0;
     }
 

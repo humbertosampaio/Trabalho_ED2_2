@@ -16,6 +16,7 @@ protected:
     Node<T>* left;
     unsigned int height;
 public:
+    Node<T>();
     Node<T>(T data);
     void setRight(Node<T>* right);
     void setLeft(Node<T>* left);
