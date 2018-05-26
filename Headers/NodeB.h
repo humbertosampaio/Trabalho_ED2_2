@@ -18,7 +18,7 @@ public:
     {
         for(int i = 0; i <= MAX; ++i){
 
-            chave[i] = 0;
+            //chave[i] = 0;
             filho[i] = nullptr;
 
         }
@@ -27,7 +27,7 @@ public:
     }
     ~NodeB<T>() = default;
 
-    int getPos(int valor)
+    int getPos(T valor)
     {
 
         for(int i = 0; i < tamanho; i++){
@@ -40,7 +40,7 @@ public:
 
 
     int tamanho=0;
-    int chave[MAX+1]; /// Cada nó possui 2*d chaves + a chave de overflow
+    T chave[MAX+1]; /// Cada nó possui 2*d chaves + a chave de overflow
     NodeB<T>* filho[MAX + 2]; /// Cada nó possui 2d+1 filhos + 1 filho de buffer para o overflow
     //: (2*d) - Para facilitar, os nós permitem uma chave a mais (buffer na posição MAX).
 };

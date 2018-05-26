@@ -21,7 +21,7 @@ public:
     bool find(T valor);
     NodeB<T>* insereNo(NodeB<T> *no, T valor);
     void insereRecursivo(NodeB<T> *no, T valor);
-    int split(NodeB<T> *n, NodeB<T> **novoNo);
+    T split(NodeB<T> *n, NodeB<T> **novoNo);
     NodeB<T>* find(NodeB<T> *n, T valor);
     NodeB<T>** getRaiz();
     void imprime();

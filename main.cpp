@@ -50,10 +50,30 @@ struct Variables
 
 void testViniman()
 {
-    BTree<int> bt;
-    bt.insere(4);
-    bt.insere(5);
-    bt.insere(6);
+    BTree<Question> bt;
+    string* str = new string[5];
+    str[0] = "023";
+    str[1] = "33";
+    str[2] = "11";
+    str[3] = "93";
+    str[4] = "32";
+    Question qt1(str);
+    cout << "Question " << qt1 << endl;
+    str[0] = "2";
+    str[1] = "333";
+    str[2] = "1";
+    str[3] = "3";
+    str[4] = "9";
+    Question qt2(str);
+    str[0] = "200";
+    str[1] = "39";
+    str[2] = "33";
+    str[3] = "44";
+    str[4] = "66";
+    Question qt3(str);
+    bt.insere(qt2);
+    bt.insere(qt3);
+    bt.insere(qt1);
     bt.imprime();
 
     /*

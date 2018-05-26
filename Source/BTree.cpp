@@ -49,7 +49,7 @@ void BTree<T>::insere(T valor)
         {
             NodeB<T>* novoNo;
             NodeB<T>* auxRaiz = new NodeB<T>();
-            int s = split(raiz, &novoNo);
+            T s = split(raiz, &novoNo);
             auxRaiz->filho[0] = raiz;
             auxRaiz->filho[1] = novoNo;
             auxRaiz->chave[0] = s;
@@ -104,7 +104,7 @@ void BTree<T>::insereRecursivo(NodeB<T>* no, T valor)
         {
 
             NodeB<T>* novoNo;///No que sera criado no split
-            int s = split(no->filho[k],&novoNo);///Valor de retorno do split, ou seja, o valor que será adicionado no 'no'
+            T s = split(no->filho[k],&novoNo);///Valor de retorno do split, ou seja, o valor que será adicionado no 'no'
             insereNo(no,s);
             no->filho[no->getPos(s)] = no->filho[no->getPos(s)+1];///Coloco o ponteiro para o filho 'n' usado no split na posicao correta
             no->filho[no->getPos(s)+1] = novoNo;///Adiciona o 'novoNo' criado como filho maior de 's'
@@ -150,13 +150,13 @@ NodeB<T>* BTree<T>::find(NodeB<T>* n, T valor)
 }
 
 template<class T>
-int BTree<T>::split(NodeB<T>* n, NodeB<T>** novoNo)///Reparte os valores de 'n' para o 'novoNo' e retorna o valor mediano;
+T BTree<T>::split(NodeB<T>* n, NodeB<T>** novoNo)///Reparte os valores de 'n' para o 'novoNo' e retorna o valor mediano;
 {
     *novoNo = new NodeB<T>();
 
     int MID = MIN; /// Encontra o valor mediano no No 'n'
     int k = 0;
-    int sobressalente;
+    T sobressalente;
 
     for(int i=MID+1; i <= MAX; i++)
     {

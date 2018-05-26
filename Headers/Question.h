@@ -19,6 +19,7 @@ private:
     string date;
     string title;
 public:
+    Question() = default;
     Question(string* question);
     ~Question();
     void printComponents ();
