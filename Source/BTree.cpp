@@ -161,7 +161,7 @@ T BTree<T>::split(NodeB<T>* n, NodeB<T>** novoNo)///Reparte os valores de 'n' pa
     for(int i=MID+1; i <= MAX; i++)
     {
         (*novoNo)->chave[k] = n->chave[i];
-        n->chave[i] = 0;
+        //n->chave[i] = 0;
         (*novoNo)->filho[k] = n->filho[i];
         n->filho[i] = nullptr;
         (*novoNo)->tamanho++;
@@ -172,7 +172,7 @@ T BTree<T>::split(NodeB<T>* n, NodeB<T>** novoNo)///Reparte os valores de 'n' pa
     (*novoNo)->filho[k] = n->filho[MAX+1];
     n->filho[MAX+1] = nullptr;//n->filho[MAX+1] = nullptr;
     sobressalente = n->chave[MID]; ///Guardo o No que ira subir para o pai
-    n->chave[MID] = 0;
+    //n->chave[MID] = 0;
     n->tamanho--;
 
     return sobressalente; ///Retorna o No sobressalente da funcao split

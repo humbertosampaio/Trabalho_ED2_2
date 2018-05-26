@@ -71,9 +71,24 @@ void testViniman()
     str[3] = "44";
     str[4] = "66";
     Question qt3(str);
+    str[0] = "1";
+    str[1] = "39";
+    str[2] = "33";
+    str[3] = "44";
+    str[4] = "66";
+    Question qt4(str);
+    str[0] = "5";
+    str[1] = "39";
+    str[2] = "33";
+    str[3] = "44";
+    str[4] = "66";
+    Question qt5(str);
     bt.insere(qt2);
     bt.insere(qt3);
     bt.insere(qt1);
+    bt.insere(qt5);
+    bt.insere(qt4);
+    //bt.insere(qt4);
     bt.imprime();
 
     /*
