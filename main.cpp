@@ -1,9 +1,11 @@
 #include <cstring>
+#include <BTree.h>
 #include "Headers/FileUtils.h"
 #include "Source/BinaryTree.cpp"
 #include "Source/SplayTree.cpp"
 #include "Source/AvlTree.cpp"
 #include "Source/RBTree.cpp"
+#include "Source/BTree.cpp"
 
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
 
@@ -46,8 +48,14 @@ struct Variables
 };
 
 
-void tests()
+void testViniman()
 {
+    BTree<int> bt;
+    bt.insere(4);
+    bt.insere(5);
+    bt.insere(6);
+    bt.imprime();
+
     /*
     AvlTree avltree;
     auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
@@ -137,7 +145,7 @@ int main(int argc, char** argv)
 {
     if(argc == 2 && !strcmp(argv[1], "test"))
     {
-        tests();
+        testViniman();
         return 0;
     }
     else if(argc == 2 && !strcmp(argv[1], "testedson"))
@@ -150,7 +158,7 @@ int main(int argc, char** argv)
         /*testLuis();*/
         return 0;
     }
-	else if (argc == 1)
+	else if (argc == 1 && false)
 	{
 		testHumberto();
 		return 0;
@@ -168,6 +176,7 @@ int main(int argc, char** argv)
 
 
     FileUtils::showTop();
+
     if (argc != 2 && argc != 1)
     {
         cout << "Erro na chamada do programa. Informe corretamente o path (caminho) padrao inicial." << endl;
@@ -193,4 +202,89 @@ int main(int argc, char** argv)
     if(vars.answerVector.empty())
         FileUtils::readFileAnswer(vars.answerPath, vars.answerVector);
     return 0;
+}
+
+
+
+
+void openMenu(Variables &vars)
+{
+    cout << "---------------------------------------------------------------------------------" << endl;
+    cout << "||            TRABALHO DE ESTRUTURA DE DADOS 2 - MENU DE ESCOLHAS              ||" << endl;
+    cout << "---------------------------------------------------------------------------------" << endl;
+    cout << "||                    INSIRA O CODIGO DA OPCAO ESCOLHIDA                       ||" << endl;
+    cout << "Opcao 0: Sair e encerrar a execucao" << endl;
+    cout << "Opcao 1: Gerar uma arvore AVL" << endl;
+    cout << "Opcao 2: Gerar uma arvore AVL Modificada [Balanceada se fb esta entre -3 e 3]" << endl;
+    cout << "Opcao 2: Gerar uma arvore Vermelho e Preta" << endl;
+    cout << "Opcao 2: Gerar uma arvore Splay" << endl;
+    cout << "Opcao 2: Gerar uma arvore B" << endl;
+    cout << "Opcao 2: Gerar uma arvore ..... (MinhaArvoreDeBalanceamento)" << endl;
+    cout << "----------" << endl;
+    cout << "Opcao: ";
+    cin >> vars.section;
+    cout << "||---------------------------------------------------------------------------------||" << endl;
+    switch (vars.section)
+    {
+        case 0:
+            FileUtils::endProgram();
+        case 1: /// Secao 1
+            //section1(vars);
+            break;
+        case 2: /// Secao 2
+            int param;
+            //section2(vars);
+            break;
+        default:
+            cout << "Opcao invalida. Tente novamente:" << endl;
+            openMenu(vars);
+    }
+    FileUtils::pauseScreen(true);
+    char executarNovamente;
+    cout << "Executar novamente? (S/N)" << endl;
+    cin >> executarNovamente;
+    while (executarNovamente != 'N' && executarNovamente != 'n' && executarNovamente != 'S' && executarNovamente != 's')
+    {
+        cout << "Entrada invalida! Tente novamente: ";
+        cin >> executarNovamente;
+    }
+    executarNovamente == 'S' || executarNovamente == 's' ? openMenu(vars) : FileUtils::endProgram();
+}
+
+void section1(Variables &vars) {
+    if(vars.questionVector.empty())
+        FileUtils::readFileQuestion(vars.questionPath, vars.questionVector);
+    do {
+        cout << "\t---------------------------------------------------------------------------------" << endl;
+        cout << "\tEscolha o cenario:" << endl;
+        cout << "\tCenario 1: Impacto de diferentes estruturas de dados" << endl;
+        cout << "\tCenario 2: Impacto de variacoes do Quicksort" << endl;
+        cout << "\tCenario 3: QuickSort X InsertionSort X MergeSort X HeapSort X MeuSort(CombSort)" << endl;
+        cout << "\tCenario 4: Tratamento de Colisoes: Enderecamento X Encadeamento" << endl;
+        cout << "\t0: Voltar" << endl;
+        cout << "\t----------" << endl;
+        cout << "\tOpcao: ";
+        cin >> vars.cenary;
+        cout << "\t---------------------------------------------------------------------------------" << endl;
+        switch (vars.cenary) {
+            case 0:
+                openMenu(vars);
+                break;
+            case 1: // Secao 1, Cenario 1
+                //section1_cenary1(vars);
+                break;
+            case 2: // Secao 1, Cenario 2
+                //section1_cenary2(vars);
+                break;
+            case 3: // Secao 1, Cenario 3
+                //section1_cenary3(vars);
+                break;
+            case 4: // Secao 1, Cenario 4
+                //section1_cenary4(vars);
+                break;
+            default:
+                cout << "\tCenario Invalido. Tente novamente" << endl;
+                section1(vars);
+        }
+    } while (vars.cenary >= 1 && vars.cenary <= 4);
 }

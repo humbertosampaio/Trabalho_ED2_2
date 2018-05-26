@@ -35,6 +35,8 @@ class FileUtils
 	static void endProgram();
 	static void pauseScreen(bool continuar);
     static void showTop();
+
+    void showMenu();
 };
 
 #endif //TRABALHO_ED2_FILEUTILS_H

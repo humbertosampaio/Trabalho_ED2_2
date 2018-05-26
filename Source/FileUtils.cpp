@@ -315,15 +315,29 @@ void FileUtils::showTop()
     cout << "         ----------        Vinicius Carlos       ----------" << endl;
     cout << "         --------------------------------------------------" << endl;
     cout << "         --------------------------------------------------" << endl << endl;
+	pauseScreen(true);
     cout << "---------------------------- INFORMACOES ----------------------------" << endl;
-    cout << "-> O arquivo saida.txt sera gerado no diretorio do executavel." << endl;
+    cout << "-> Os arquivos de saida serão gerados no diretorio do executavel." << endl;
+	cout << "-> Os arquivos de entrada precisam estar no diretorio do executavel" << endl;
     cout << "-> Para executar use: <./NomeDoExecutavelCompilado> <path>" << endl;
 	cout << "-> Caso nao passe a path por linha de comando, o diretorio onde esta" << endl;
 	cout << "   executavel sera considerado como path." << endl;
-    cout << "-> O path (caminho do diretorio) informado precisa conter o" << endl;
-    cout << "   arquivo entrada.txt e o diretorio pythonquestions." << endl;
     cout << "-> Os arquivos usados (Answers.csv, Questions.csv, Tags.csv) precisam" << endl;
     cout << "   estar na pasta pythonquestions que fica no diretorio informado." << endl;
     cout << "---------------------------- INFORMACOES ----------------------------" << endl;
     pauseScreen(true);
 }
+
+void FileUtils::showMenu()
+{
+	cout << endl << endl;
+	cout << "" << endl;
+	cout << "" << endl;
+	cout << "" << endl;
+	cout << "" << endl;
+	cout << "" << endl;
+	cout << "" << endl;
+}
+
+
+

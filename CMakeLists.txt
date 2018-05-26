@@ -10,13 +10,16 @@ add_executable(Trabalho_ED2_2
         Headers/AvlNode.h
         Headers/AvlTree.h
         Headers/BinaryTree.h
+        Headers/BTree.h
         Headers/FileUtils.h
         Headers/Node.h
+        Headers/NodeB.h
+        Headers/NodeRB.h
         Headers/Question.h
+        Headers/RBTree.h
         Headers/SplayTree.h
         Headers/Tag.h
-        Headers/NodeRB.h
-        Headers/RBTree.h
+        Source/BTree.cpp
         Source/NodeRB.cpp
         Source/RBTree.cpp
         Source/Answer.cpp
@@ -24,7 +27,6 @@ add_executable(Trabalho_ED2_2
         Source/AvlTree.cpp
         Source/BinaryTree.cpp
         Source/FileUtils.cpp
-        Source/Node.cpp
         Source/Question.cpp
         Source/SplayTree.cpp
         Source/Tag.cpp
