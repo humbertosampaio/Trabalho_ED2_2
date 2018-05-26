@@ -2,21 +2,21 @@
 // Created by viniman on 5/19/18.
 //
 
-/// AVL é uma árvore binária balanceada
+/// AVL ï¿½ uma ï¿½rvore binï¿½ria balanceada
 /// fb = fator de balanceamento
 /// hd - he = {0, 1, -1}
 /// Rotacoes simples e duplas
 
 /** REMOCAO
- *  3 Tipos de rotação:
- *  - nó folha (sem filhos)
- *  - nó com 1 filho
- *  - nó com 2 filhos
- *  - Não se pode remover de uma árvore vazia
- *  - Removendo o último nó, a árvore fica vazia
+ *  3 Tipos de rotaï¿½ï¿½o:
+ *  - nï¿½ folha (sem filhos)
+ *  - nï¿½ com 1 filho
+ *  - nï¿½ com 2 filhos
+ *  - Nï¿½o se pode remover de uma ï¿½rvore vazia
+ *  - Removendo o ï¿½ltimo nï¿½, a ï¿½rvore fica vazia
  *
  *  Balanceamento:
- *  - Remover um nó de um lado equivale a "inserir" um nó na outra subarvore
+ *  - Remover um nï¿½ de um lado equivale a "inserir" um nï¿½ na outra subarvore
  *
  */
 
@@ -70,7 +70,7 @@ AvlNode<T>* AvlTree<T>::clear(AvlNode<T>* raiz)
 template<class T>
 void AvlTree<T>::clear()
 {
-	root = clear(root);
+	BinaryTree<T>::root = clear(BinaryTree<T>::root);
 }
 
 ////void AvlTree::clear(AvlNode<T>*raiz)
@@ -98,12 +98,12 @@ void AvlTree<T>::printByOrder(int caseOrder)
 	switch (caseOrder)
 	{
 		case PRE_ORDER:
-			preOrder(root);
+			preOrder(BinaryTree<T>::root);
 			break;
 		case IN_ORDER:
-			inOrder(root);
+			inOrder(BinaryTree<T>::root);
 		case POST_ORDER:
-			postOrder(root);
+			postOrder(BinaryTree<T>::root);
 		default:
 			cout << "Nao existe esse codigo de operacao" << endl;
 	}
@@ -157,7 +157,7 @@ void AvlTree<T>::postOrder(AvlNode<T>* p)
 template<class T>
 void AvlTree<T>::insert(T val)
 {
-	root = auxInsere(getRoot(), val);
+	BinaryTree<T>::root = auxInsere(getRoot(), val);
 }
 
 template<class T>
@@ -187,7 +187,7 @@ AvlNode<T>* AvlTree<T>::auxInsere(AvlNode<T>* no, T val)
 template<class T>
 void AvlTree<T>::remove(T val)
 {
-	root = auxRemove(getRoot(), val);
+	BinaryTree<T>::root = auxRemove(getRoot(), val);
 }
 
 template<class T>
@@ -245,7 +245,7 @@ AvlNode<T>* AvlTree<T>::auxRemove(AvlNode<T>* p, T val)
 template<class T>
 bool AvlTree<T>::busca(T val)
 {
-	return auxBusca(root, val);
+	return auxBusca(BinaryTree<T>::root, val);
 }
 
 template<class T>

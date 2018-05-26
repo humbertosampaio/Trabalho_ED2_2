@@ -3,6 +3,7 @@
 #include "Source/BinaryTree.cpp"
 #include "Source/SplayTree.cpp"
 #include "Source/AvlTree.cpp"
+#include "Source/RBTree.cpp"
 
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
 
@@ -97,17 +98,16 @@ void tests()
 
 void testEdson()
 {
-    /*AvlTree<int> a;
-    a.insert(10);
-    a.insert(-40);
-    a.insert(30);
-    a.print();
-    a.remove(-40);
-    a.print();*/
+    RBTree<int> rbt;
+    rbt.insert(530);
+    rbt.insert(40);
+    rbt.insert(90);
+    rbt.print();
 }
 
 void testHumberto()
 {
+    /*
 	AvlTree<int>* a = new AvlTree<int>();
 	a->insert(1);
 	a->insert(10);
@@ -129,7 +129,9 @@ void testHumberto()
 	b->remove(-40);
 	b->print();
 	system("pause");
+     */
 }
+
 
 int main(int argc, char** argv)
 {

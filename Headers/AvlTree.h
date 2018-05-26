@@ -26,7 +26,7 @@ template <class T> class AvlTree : public BinaryTree<T>
 
 	private:
 	// Methods
-	AvlNode<T>* getRoot() { return (AvlNode<T>*)root; }
+	AvlNode<T>* getRoot() { return (AvlNode<T>*)BinaryTree<T>::root; }
 	AvlNode<T>* clear(AvlNode<T> *raiz);
 	AvlNode<T>* auxInsere(AvlNode<T> *no, T val);
 	AvlNode<T>* auxRemove(AvlNode<T> *no, T val);
