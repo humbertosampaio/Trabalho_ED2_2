@@ -11,6 +11,7 @@ add_executable(Trabalho_ED2_2
         Headers/AvlTree.h
         Headers/BinaryTree.h
         Headers/BTree.h
+        Headers/CompareCount.h
         Headers/FileUtils.h
         Headers/Node.h
         Headers/NodeB.h
@@ -20,6 +21,7 @@ add_executable(Trabalho_ED2_2
         Headers/SplayTree.h
         Headers/Tag.h
         Source/BTree.cpp
+        Source/CompareCount.cpp
         Source/NodeRB.cpp
         Source/RBTree.cpp
         Source/Answer.cpp
