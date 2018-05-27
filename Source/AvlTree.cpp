@@ -297,22 +297,22 @@ AvlNode<T>* AvlTree<T>::balance(AvlNode<T>* no)
 	/// Calcular o fator de balanceamento(alt_esq - alt_dir)
 	int fb = calcFB(no);
 
-	if (fb < -1 || fb > 1)
+	if (fb < (-1)*fatorBalanc || fb > fatorBalanc)
 	{
-		if (fb == 2)
+		if (fb == (1+fatorBalanc))
 		{
 			int fbEsq = calcFB(no->getLeft());
-			if (fbEsq == 1)
+			if (fbEsq == fatorBalanc)
 				no = rightRotate(no);
-			else if (fbEsq == -1)
+			else if (fbEsq == (-1)*fatorBalanc)
 				no = leftRightRotate(no);
 		}
-		else if (fb == -2)
+		else if (fb == (-1)*(1+fatorBalanc))
 		{
 			int fbDir = calcFB(no->getRight());
-			if (fbDir == -1)
+			if (fbDir == (-1)*fatorBalanc)
 				no = leftRotate(no);
-			else if (fbDir == 1)
+			else if (fbDir == fatorBalanc)
 				no = rightLeftRotate(no);
 		}
 	}
@@ -364,5 +364,23 @@ AvlNode<T>* AvlTree<T>::rightLeftRotate(AvlNode<T>*y)
 {
 	y->setRight(rightRotate(y->getRight()));
 	return leftRotate(y);
+}
+
+/**
+ *
+ * @tparam T
+ * @param mod
+ */
+template<class T> void AvlTree<T>::modifydAvl(bool mod)
+{
+    modifiedAvl = mod;
+    if(modifiedAvl)
+    {
+        fatorBalanc = 3;
+    }
+    else
+    {
+        fatorBalanc = 1;
+    }
 }
 

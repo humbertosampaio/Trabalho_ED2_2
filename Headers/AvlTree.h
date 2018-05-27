@@ -23,9 +23,15 @@ template <class T> class AvlTree : public BinaryTree<T>
 	void remove(T val);
 	bool busca(T val);
 	void printByOrder(int caseOrder);
+	void modifydAvl(bool mod);
 
 	private:
+	/// Variáveis para setar a AVL Modificada
+	unsigned short fatorBalanc = 1;
+	bool modifiedAvl = false;
+
 	// Methods
+
 	AvlNode<T>* getRoot() { return (AvlNode<T>*)BinaryTree<T>::root; }
 	AvlNode<T>* clear(AvlNode<T> *raiz);
 	AvlNode<T>* auxInsere(AvlNode<T> *no, T val);

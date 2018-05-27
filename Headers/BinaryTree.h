@@ -13,7 +13,8 @@ template <class T> class BinaryTree
 	BinaryTree<T>();
 	virtual void insert(T value);
 	Node<T>* search(T value);
-	void remove(T value);
+
+    virtual void remove(T value);
 	void print();
 
 	protected:
