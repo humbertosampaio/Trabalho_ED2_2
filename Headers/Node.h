@@ -24,11 +24,13 @@ template <class T> class Node
 	void setLeft(Node<T>* left);
 	T getValue();
 
-	Node<T> *getRight();
+    virtual Node<T> *getRight();
 
-	Node<T> *getLeft();
+	virtual Node<T> *getLeft();
 
 	void setValue(T value);
+
+
 };
 
 #include "../Source/Node.cpp"

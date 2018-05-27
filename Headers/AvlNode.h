@@ -10,7 +10,7 @@
 template <class T> class AvlNode : public Node<T>
 {
 	public:
-	AvlNode(T val) : Node<T>(val) { };
+	explicit AvlNode(T val) : height(1), Node<T>(val) { };
 	int getHeight();
 	AvlNode<T>* getLeft() { return (AvlNode<T>*)(Node<T>::left); }
 	AvlNode<T>* getRight() { return (AvlNode<T>*)(Node<T>::right); }

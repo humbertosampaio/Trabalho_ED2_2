@@ -5,6 +5,10 @@
 #ifndef BINARYTREE_H
 #define BINARYTREE_H
 
+#define PRE_ORDER 1
+#define IN_ORDER 2
+#define POST_ORDER 3
+
 #include "Node.h"
 
 template <class T> class BinaryTree
@@ -16,6 +20,8 @@ template <class T> class BinaryTree
 
     virtual void remove(T value);
 	void print();
+	void printByOrder(int caseOrder);
+
 
 	protected:
 	Node<T>* root;
@@ -27,8 +33,17 @@ template <class T> class BinaryTree
 	Node<T>* removeLeaf(Node<T>* node);
 	Node<T>* remove1Son(Node<T>* node);
 	Node<T>* menorSubArvDireita(Node<T>* node);
-	void printByLevel(Node<T>* node, int level);
+	void printByLevel(Node<T>* p, int level);
 
+
+
+    void preOrder(Node<T> *p);
+
+
+    void inOrder(Node<T> *p);
+
+
+    void postOrder(Node<T> *p);
 };
 
 #include "../Source/BinaryTree.cpp"

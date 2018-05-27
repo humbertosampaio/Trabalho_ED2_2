@@ -91,7 +91,7 @@ void AvlTree<T>::clear()
 //	delete raiz;
 //	}*/
 //}
-
+/*
 template<class T>
 void AvlTree<T>::printByOrder(int caseOrder)
 {
@@ -152,7 +152,7 @@ void AvlTree<T>::postOrder(AvlNode<T>* p)
 		postOrder(p->getRight());
 		cout << p->getValue() << "(" << p->getHeight() << ") ";
 	}
-}
+}*/
 
 template<class T>
 void AvlTree<T>::insert(T val)

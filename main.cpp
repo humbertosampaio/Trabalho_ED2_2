@@ -50,7 +50,7 @@ struct Variables
 
 void testViniman()
 {
-    BTree<Question> bt;
+    /*BTree<Question> bt;
     string* str = new string[5];
     str[0] = "023";
     str[1] = "33";
@@ -90,6 +90,24 @@ void testViniman()
     bt.insere(qt4);
     //bt.insere(qt4);
     bt.imprime();
+    */
+
+    AvlTree<int> avl;
+    //avl.modifydAvl(false);
+    avl.insert(9);
+    avl.insert(8);
+    avl.insert(10);
+    avl.insert(11);
+    avl.insert(19);
+    avl.insert(20);
+    avl.insert(21);
+    avl.insert(22);
+    avl.insert(23);
+    avl.insert(25);
+    avl.insert(1);
+    avl.insert(2);
+    avl.print();
+    avl.printByOrder(IN_ORDER);
 
     /*
     AvlTree avltree;

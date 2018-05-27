@@ -5,9 +5,9 @@
 #ifndef TRABALHO_ED2_2_AVLTREE_H
 #define TRABALHO_ED2_2_AVLTREE_H
 
-#define PRE_ORDER 1
-#define IN_ORDER 2
-#define POST_ORDER 3
+//#define PRE_ORDER 1
+//#define IN_ORDER 2
+//#define POST_ORDER 3
 
 #include "AvlNode.h"
 #include "../Source/BinaryTree.cpp"
@@ -22,7 +22,7 @@ template <class T> class AvlTree : public BinaryTree<T>
 	void insert(T val);
 	void remove(T val);
 	bool busca(T val);
-	void printByOrder(int caseOrder);
+	//void printByOrder(int caseOrder);
 	void modifydAvl(bool mod);
 
 	private:
@@ -46,9 +46,9 @@ template <class T> class AvlTree : public BinaryTree<T>
 	int calcAltura(AvlNode<T> *p);
 	int calcFB(AvlNode<T> *no);
 	AvlNode<T> *balance(AvlNode<T> *no);
-	void postOrder(AvlNode<T> *p);
-	void inOrder(AvlNode<T> *p);
-	void preOrder(AvlNode<T> *p);
+	//void postOrder(AvlNode<T> *p);
+	//void inOrder(AvlNode<T> *p);
+	//void preOrder(AvlNode<T> *p);
 };
 
 #endif //TRABALHO_ED2_2_AVLTREE_H
