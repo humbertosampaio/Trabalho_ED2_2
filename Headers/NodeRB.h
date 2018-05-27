@@ -16,6 +16,7 @@ protected:
 public:
     NodeRB<T>(){};
     NodeRB<T>(T value);
+    ~NodeRB() = default;
     T getValue();
     void setValue(T value);
 
