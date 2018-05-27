@@ -10,8 +10,32 @@
 template<class T>
 BinaryTree<T>::BinaryTree()
 {
-	cout << "Construindo Binary Tree" << endl;
     root = nullptr;
+}
+
+template<class T>
+BinaryTree<T>::~BinaryTree<T>()
+{
+	clear();
+}
+
+template<class T>
+void BinaryTree<T>::clear()
+{
+	root = auxClear(root);
+}
+
+template<class T>
+Node<T>* BinaryTree<T>::auxClear(Node<T>* root)
+{
+	if (root != nullptr)
+	{
+		root->setLeft(auxClear(root->getLeft()));
+		root->setRight(auxClear(root->getRight()));
+		delete root;
+		root = nullptr;
+	}
+	return root;
 }
 
 template<class T>
@@ -116,7 +140,7 @@ Node<T>* BinaryTree<T>::auxRemove(Node<T>* node, T value)
     return node;
 }
 
-template  <class T>
+template <class T>
 void BinaryTree<T>::print()
 {
     printByLevel(root, 0);
@@ -172,7 +196,6 @@ void BinaryTree<T>::preOrder(Node<T>* p)
     }
 }
 
-
 // A utility function to print inorder traversal
 // of the tree.
 // The function also prints height of every node
@@ -187,7 +210,6 @@ void BinaryTree<T>::inOrder(Node<T>* p)
     }
 }
 
-
 // A utility function to print postorder traversal
 // of the tree.
 // The function also prints height of every node
@@ -201,10 +223,5 @@ void BinaryTree<T>::postOrder(Node<T>* p)
         cout << p->getValue() << " ";
     }
 }
-
-
-
-
-#include "../Source/BinaryTree.cpp"
 
 #endif

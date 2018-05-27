@@ -2,7 +2,7 @@
 // Created by edson on 24/05/18.
 //
 
-#include "../../Trabalho_ED2_2/Headers/RBTree.h"
+#include "../Headers/RBTree.h"
 
 
 template<class T>

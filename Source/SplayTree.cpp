@@ -4,18 +4,6 @@
 
 using namespace std;
 
-template <class T>
-SplayTree<T>::SplayTree()
-{
-    root = nullptr;
-}
-
-template <class T>
-SplayTree<T>::~SplayTree()
-{
-    //Destrutor
-}
-
 /* LL - Rotação a Direita:
         k2                   k1
        /  \                 /  \
@@ -198,27 +186,4 @@ bool SplayTree<T>::search(T key)
 {
     root = splay(root, key);
     return (root->getValue() == key);
-}
-
-
-template  <class T>
-void SplayTree<T>::print()
-{
-    printByLevel(root, 0);
-}
-
-// TODO: Retirar isso daqui e mandar herdar de BinaryTree
-template <class T>
-void SplayTree<T>::printByLevel(Node<T> *p, int level)
-{
-    if (p != nullptr)
-    {
-        cout << "(" << level << ")";
-        for(int i = 1; i <= level; i++)
-            cout << "--";
-        cout << " ";
-        cout << p->getValue() << endl;
-        printByLevel(p->getLeft(), level+1);
-        printByLevel(p->getRight(), level+1);
-    }
 }
