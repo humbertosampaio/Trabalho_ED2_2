@@ -17,13 +17,15 @@ NodeRB<T>::NodeRB(T data)
 template<class T>
 void NodeRB<T>::setRight(NodeRB<T>* right)
 {
-    this->right = right;
+    if(this != nullptr)
+        this->right = right;
 }
 
 template<class T>
 void NodeRB<T>::setLeft(NodeRB<T>* left)
 {
-    this->left = left;
+    if(this != nullptr)
+        this->left = left;
 }
 
 template<class T> T NodeRB<T>::getValue()
@@ -33,11 +35,15 @@ template<class T> T NodeRB<T>::getValue()
 
 template<class T>
 NodeRB<T> *NodeRB<T>::getRight() const {
+    if(this == nullptr)
+        return nullptr;
     return right;
 }
 
 template<class T>
 NodeRB<T> *NodeRB<T>::getLeft() const {
+    if(this == nullptr)
+        return nullptr;
     return left;
 }
 
@@ -48,12 +54,15 @@ void NodeRB<T>::setValue(T value) {
 
 template<class T>
 NodeRB<T> *NodeRB<T>::getParent() const {
+    if(this == nullptr)
+        return nullptr;
     return parent;
 }
 
 template<class T>
 void NodeRB<T>::setParent(NodeRB<T> *parent) {
-    this->parent = parent;
+    if (this != nullptr)
+        this->parent = parent;
 }
 
 template<class T>
@@ -65,5 +74,6 @@ bool NodeRB<T>::isRed() const {
 
 template<class T>
 void NodeRB<T>::setRed(bool red) {
-    this->red = red;
+    if (this != nullptr)
+        this->red = red;
 }
