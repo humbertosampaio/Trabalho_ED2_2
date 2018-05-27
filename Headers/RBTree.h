@@ -29,8 +29,11 @@ private: //funcoes auxiliares
     NodeRB<T>* removeLeaf(NodeRB<T>* node);
     NodeRB<T>* remove1Son(NodeRB<T>* node);
     NodeRB<T>* menorSubArvDireita(NodeRB<T>* node);
+    NodeRB<T>* maiorSubArvEsq(NodeRB<T>* node);
     void printByLevel(NodeRB<T>* node, int level);
-    void fixViolation(NodeRB<T> *&root, NodeRB<T> *&newNode);
+    void fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode);
+    void fixRemove(NodeRB<T> *&node, NodeRB<T> *& parent);
+    void removeCase1 (NodeRB<T> *&node, NodeRB<T> *& parent);
 
     void rotateRight(NodeRB<T> *&root, NodeRB<T> *&newNode);
     void rotateLeft(NodeRB<T> *&root, NodeRB<T> *&pt);

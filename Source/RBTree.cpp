@@ -16,7 +16,7 @@ void RBTree<T>::insert (T value)
 {
     NodeRB<T>* newNode = new NodeRB<T>(value);
     root = auxInsert(root, newNode);
-    fixViolation(root, newNode);
+    fixInsert(root, newNode);
 }
 
 template<class T>
@@ -89,7 +89,7 @@ void RBTree<T>::rotateRight(NodeRB<T> *&root, NodeRB<T> *&newNode)
 }
 
 template<class T>
-void RBTree<T>::fixViolation(NodeRB<T> *&root, NodeRB<T> *&newNode)
+void RBTree<T>::fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode)
 {
     //pai e avo do novo no inserido, respectivamente
     NodeRB<T> *parent_newNode = nullptr;
@@ -208,11 +208,7 @@ NodeRB<T>* RBTree<T>::auxSearch(NodeRB<T>* root, T value)
     return auxSearch(root->getLeft(), value);
 }
 
-template <class T>
-void RBTree<T>::remove (T value)
-{
-    auxRemove(root, value);
-}
+
 
 template<class T>
 NodeRB<T>* RBTree<T>::removeLeaf(NodeRB<T> *p)
@@ -242,6 +238,21 @@ NodeRB<T>* RBTree<T>::menorSubArvDireita(NodeRB<T>* node)
     return aux;
 }
 
+template <class T>
+NodeRB<T>* RBTree<T>::maiorSubArvEsq(NodeRB<T> *node)
+{
+    NodeRB<T> *aux = node->getLeft();
+    while(aux->getRight() != nullptr)
+        aux = aux->getRight();
+    return aux;
+}
+
+template <class T>
+void RBTree<T>::remove (T value)
+{
+    auxRemove(root, value);
+}
+
 template<class T>
 NodeRB<T>* RBTree<T>::auxRemove(NodeRB<T>* node, T value)
 {
@@ -251,15 +262,34 @@ NodeRB<T>* RBTree<T>::auxRemove(NodeRB<T>* node, T value)
         node->setLeft(auxRemove(node->getLeft(), value));
     else if(value > node->getValue())
         node->setRight(auxRemove(node->getRight(), value));
-    else
+    else if(node != nullptr)
     {
-        if(node->getLeft() == nullptr && node->getRight() == nullptr)
+        if(node->getLeft() == nullptr && node->getRight() == nullptr) {
+            NodeRB<T>* parent = node->getParent();
+            bool nodeColor = node->isRed();
             node = removeLeaf(node);
-        else if((node->getLeft() == nullptr) || (node->getRight() == nullptr))
+            node->setParent(parent);
+
+            if (!nodeColor && !node->isRed())
+                fixRemove(node, parent);
+                //caso 1 em que o filho ou o no deletado eh vermelho, nao eh necessario chamar fixRemove
+            else node->setRed(false);
+        }
+        else if((node->getLeft() == nullptr) || (node->getRight() == nullptr)) {
+            NodeRB<T>* parent = node->getParent();
+            bool nodeColor = node->isRed();
             node = remove1Son(node);
+            node->setParent(parent);
+
+            if (!nodeColor && !node->isRed())
+                fixRemove(node, parent);
+            //caso 1 em que o filho ou o no deletado eh vermelho, nao eh necessario chamar fixRemove
+            else node->setRed(false);
+        }
         else
         {
-            NodeRB<T> *aux = menorSubArvDireita(node);
+            //NodeRB<T> *aux = menorSubArvDireita(node);
+            NodeRB<T> *aux = maiorSubArvEsq(node);
             node->setValue(aux->getValue());
             aux->setValue(value);
             node->setRight(auxRemove(node->getRight(), value));
@@ -268,10 +298,81 @@ NodeRB<T>* RBTree<T>::auxRemove(NodeRB<T>* node, T value)
     return node;
 }
 
+template <class T>
+void RBTree<T>::removeCase1(NodeRB<T> *&node, NodeRB<T> *& parent)
+{
+    /*  Case : A
+           caso em que irmao de node eh filho a esquerda de parent*/
+    if (node == parent->getRight())
+    {
+        NodeRB<T>* brother = parent->getLeft();
+        NodeRB<T>* sobrinho = (brother->getLeft()->isRed() ? brother->getLeft() :brother->getRight());
+        sobrinho->setRed(false);
+
+        if (sobrinho == brother->getRight())
+        {
+            cout << "a";
+            rotateLeft(root, brother);
+            sobrinho = brother;
+            brother = sobrinho->getParent();
+        }
+
+        rotateRight(root, parent);
+    }
+        /* Case : B
+           Parent of newNode is right child of Grand-parent of newNode */
+    else
+    {
+        NodeRB<T>* brother = parent->getRight();
+        NodeRB<T>* sobrinho = (brother->getRight()->isRed() ? brother->getRight() :brother->getLeft());
+        sobrinho->setRed(false);
+
+        {
+
+            if (sobrinho == brother->getLeft())
+            {
+                cout << "b";
+                rotateRight(root, brother);
+                sobrinho = brother;
+                brother = sobrinho->getParent();
+            }
+
+            rotateLeft(root, parent);
+        }
+    }
+}
+
+
+template <class T>
+void RBTree<T>::fixRemove(NodeRB<T> *&node, NodeRB<T>*& parent) {
+    NodeRB<T>* brother = (node == parent->getRight() ? parent->getLeft() : parent->getRight());
+    while (node != root)
+    {
+        if (!brother->isRed())
+        {
+            if (brother->getRight()->isRed() || brother->getLeft()->isRed())
+            {
+                removeCase1(node, parent);
+                break;
+            }
+            else
+            {
+
+            }
+        }
+        else
+        {
+
+        }
+    }
+    root->setRed(false);
+}
+
 template  <class T>
 void RBTree<T>::print()
 {
     printByLevel(root, 0);
+    cout << endl;
 }
 
 template <class T>

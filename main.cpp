@@ -159,11 +159,18 @@ void testViniman()
 
 void testEdson()
 {
-    RBTree<int> rbt;
-    rbt.insert(530);
-    rbt.insert(40);
-    rbt.insert(90);
-    rbt.print();
+    RBTree<int> rb;
+    int random;
+    for (int i = 0; i < 10; ++i)
+    {
+        random = rand()%100;
+        cout << random << " ";
+        rb.insert(random);
+    }
+    cout << endl;
+    rb.print();
+    rb.remove(58);
+    rb.print();
 }
 
 void testHumberto()
