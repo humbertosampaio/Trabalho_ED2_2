@@ -5,51 +5,50 @@
 #ifndef TRABALHO_ED2_2_AVLTREE_H
 #define TRABALHO_ED2_2_AVLTREE_H
 
-#define PRE_ORDER 1
-#define IN_ORDER 2
-#define POST_ORDER 3
+//#define PRE_ORDER 1
+//#define IN_ORDER 2
+//#define POST_ORDER 3
 
-#include "NodeAvl.h"
-#include "BinaryTree.h"
+#include "AvlNode.h"
+#include "../Source/BinaryTree.cpp"
 
-template <class T> class AvlTree : public BinaryTree<T> {
-public:
+template <class T> class AvlTree : public BinaryTree<T>
+{
+	public:
+	//AvlTree();
+	//virtual ~AvlTree();s
 
-    explicit AvlTree<T>(string a):BinaryTree<T>(){};
-    virtual ~AvlTree<T>() = default;
-    void clear();
-    void insert(T val);
+	void clear();
+	void insert(T val);
+	void remove(T val);
+	bool busca(T val);
+	//void printByOrder(int caseOrder);
+	void modifydAvl(bool mod);
 
-    /*
-    void remove(int val);
-    bool busca(int val);
-    void printByLevel();
-    void printByOrder(int caseOrder);
-    //NodeAvl* getRaiz() { return raiz; }
-    */
-private:
+	private:
+	/// Variáveis para setar a AVL Modificada
+	unsigned short fatorBalanc = 1;
+	bool modifiedAvl = false;
 
-    NodeAvl<T>* raiz;
-    int calcFB(NodeAvl<T> *no);
-    NodeAvl<T>* balance(NodeAvl<T> *no);
-    /*
-    NodeAvl* auxInsere(NodeAvl *no, int val);
-    NodeAvl *auxRemove(NodeAvl *no, int val);
-    bool auxBusca(NodeAvl *p, int val);
-    NodeAvl* leftRotate(NodeAvl *raiz);
-    NodeAvl* rightRotate(NodeAvl *y);
-    NodeAvl *rightLeftRotate(NodeAvl *y);
-    NodeAvl *leftRightRotate(NodeAvl *y);
-    int max(int &x, int &y);
-    int calcAltura(NodeAvl *p);
-    void imprimePorNivel(NodeAvl *p, int nivel);
-    void postOrder(NodeAvl *p);
-    void inOrder(NodeAvl *p);
-    void preOrder(NodeAvl *p);
-     */
-    //NodeAvl<T> * clear(NodeAvl *raiz);
+	// Methods
 
+	AvlNode<T>* getRoot() { return (AvlNode<T>*)BinaryTree<T>::root; }
+	AvlNode<T>* clear(AvlNode<T> *raiz);
+	AvlNode<T>* auxInsere(AvlNode<T> *no, T val);
+	AvlNode<T>* auxRemove(AvlNode<T> *no, T val);
+	bool auxBusca(AvlNode<T> *p, T val);
+	AvlNode<T>* leftRotate(AvlNode<T> *raiz);
+	AvlNode<T>* rightRotate(AvlNode<T> *y);
+	AvlNode<T>* rightLeftRotate(AvlNode<T> *y);
+	AvlNode<T>* leftRightRotate(AvlNode<T> *y);
+
+	int max(int &x, int &y);
+	int calcAltura(AvlNode<T> *p);
+	int calcFB(AvlNode<T> *no);
+	AvlNode<T> *balance(AvlNode<T> *no);
+	//void postOrder(AvlNode<T> *p);
+	//void inOrder(AvlNode<T> *p);
+	//void preOrder(AvlNode<T> *p);
 };
-
 
 #endif //TRABALHO_ED2_2_AVLTREE_H

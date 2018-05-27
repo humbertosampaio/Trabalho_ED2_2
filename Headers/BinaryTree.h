@@ -2,36 +2,50 @@
 // Created by edson on 15/05/18.
 //
 
-#ifndef TREES_BINARYTREE_H
-#define TREES_BINARYTREE_H
+#ifndef BINARYTREE_H
+#define BINARYTREE_H
+
+#define PRE_ORDER 1
+#define IN_ORDER 2
+#define POST_ORDER 3
 
 #include "Node.h"
 
-template <class T> class BinaryTree {
+template <class T> class BinaryTree
+{
+	public:
+	BinaryTree<T>();
+	virtual void insert(T value);
+	Node<T>* search(T value);
 
-public:
-    BinaryTree<T>();
-    virtual void insert (Node<T>* value);
-    Node<T>* search(T value);
-    void remove (T value);
-    void print ();
+    virtual void remove(T value);
+	void print();
+	void printByOrder(int caseOrder);
 
-protected:
-    Node<T>* root;
-    Node<T>* leftRotate(Node<T> *y);
-    Node<T>* rightRotate(Node<T> *y);
-    Node<T>* rightLeftRotate(Node<T> *y);
-    Node<T>* leftRightRotate(Node<T> *y);
 
-private: //funcoes auxiliares
-    Node<T>* auxInsert(Node<T>* node, Node<T>* value);
-    Node<T>* auxSearch(Node<T>* root, T value);
-    Node<T>* auxRemove(Node<T>* node, T value);
-    Node<T>* removeLeaf(Node<T>* node);
-    Node<T>* remove1Son(Node<T>* node);
-    Node<T>* menorSubArvDireita(Node<T>* node);
-    void printByLevel(Node<T>* node, int level);
+	protected:
+	Node<T>* root;
 
+	private: //funcoes auxiliares
+	Node<T>* auxInsert(Node<T>* node, T value);
+	Node<T>* auxSearch(Node<T>* root, T value);
+	Node<T>* auxRemove(Node<T>* node, T value);
+	Node<T>* removeLeaf(Node<T>* node);
+	Node<T>* remove1Son(Node<T>* node);
+	Node<T>* menorSubArvDireita(Node<T>* node);
+	void printByLevel(Node<T>* p, int level);
+
+
+
+    void preOrder(Node<T> *p);
+
+
+    void inOrder(Node<T> *p);
+
+
+    void postOrder(Node<T> *p);
 };
+
+#include "../Source/BinaryTree.cpp"
 
 #endif //TREES_BINARYTREE_H

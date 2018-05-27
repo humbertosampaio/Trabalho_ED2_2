@@ -2,29 +2,36 @@
 // Created by edson on 15/05/18.
 //
 
+#ifndef BINARYTREE_CPP
+#define BINARYTREE_CPP
+
 #include "../Headers/BinaryTree.h"
 
 template<class T>
 BinaryTree<T>::BinaryTree()
 {
+	cout << "Construindo Binary Tree" << endl;
     root = nullptr;
 }
 
 template<class T>
-void BinaryTree<T>::insert(Node<T>* value)
+void BinaryTree<T>::insert(T value)
 {
     root = auxInsert(root, value);
 }
 
 template<class T>
-Node<T>* BinaryTree<T>::auxInsert(Node<T>* node, Node<T>* value)
+Node<T>* BinaryTree<T>::auxInsert(Node<T> *node, T value)
 {
     if(node == nullptr)
-        node = value;
-
-    else if(value->getValue() < node->getValue())
+    {
+        node = new Node<T>(value);
+        node->setLeft(nullptr);
+        node->setRight(nullptr);
+    }
+    else if(value < node->getValue())
         node->setLeft(auxInsert(node->getLeft(), value));
-    else if (value->getValue() > node->getValue())
+    else
         node->setRight(auxInsert(node->getRight(), value));
     return node;
 }
@@ -50,7 +57,7 @@ Node<T>* BinaryTree<T>::auxSearch(Node<T>* root, T value)
 }
 
 template <class T>
-void BinaryTree<T>::remove (T value)
+void BinaryTree<T>::remove(T value)
 {
     auxRemove(root, value);
 }
@@ -122,47 +129,82 @@ void BinaryTree<T>::printByLevel(Node<T> *p, int level)
     {
         cout << "(" << level << ")";
         for(int i = 1; i <= level; i++)
-            cout << "--";
-        cout << " ";
+			cout << "#";
         cout << p->getValue() << endl;
         printByLevel(p->getLeft(), level+1);
         printByLevel(p->getRight(), level+1);
     }
 }
 
-// Left Left Case (RotacaoRR)
-template <class T>
-Node<T>* BinaryTree<T>::leftRotate(Node<T> *raiz)
-{
-    Node<T>* no = raiz->getRight();
-    raiz->setRight(no->getLeft());
-    no->setLeft(raiz);
-    return no;
 
+
+template<class T>
+void BinaryTree<T>::printByOrder(int caseOrder)
+{
+    switch (caseOrder)
+    {
+        case PRE_ORDER:
+            preOrder(BinaryTree<T>::root);
+            break;
+        case IN_ORDER:
+            inOrder(BinaryTree<T>::root);
+            break;
+        case POST_ORDER:
+            postOrder(BinaryTree<T>::root);
+            break;
+        default:
+            cout << "Nao existe esse codigo de operacao" << endl;
+    }
+    cout << endl;
 }
 
-// Left Left Case (RotacaoLL)
-template <class T>
-Node<T>* BinaryTree<T>::rightRotate(Node<T> *y)
+// A utility function to print preorder traversal
+// of the tree.
+// The function also prints height of every node
+template<class T>
+void BinaryTree<T>::preOrder(Node<T>* p)
 {
-    Node<T>* x = y->getLeft();
-    y->setLeft(x->getRight());
-    x->setRight(y);
-    return x;
+    if (p != nullptr)
+    {
+        cout << p->getValue() << " ";
+        preOrder(p->getLeft());
+        preOrder(p->getRight());
+    }
 }
 
-// Left Right Case (RotacaoLR)
-template <class T>
-Node<T>* BinaryTree<T>::leftRightRotate(Node<T> *y)
+
+// A utility function to print inorder traversal
+// of the tree.
+// The function also prints height of every node
+template<class T>
+void BinaryTree<T>::inOrder(Node<T>* p)
 {
-    y->setLeft(leftRotate(y->getLeft()));
-    return rightRotate(y);
+    if (p != nullptr)
+    {
+        inOrder(p->getLeft());
+        cout << p->getValue() << " ";
+        inOrder(p->getRight());
+    }
 }
 
-// Right Left Case (RotacaoRL)
-template <class T>
-Node<T>* BinaryTree<T>::rightLeftRotate(Node<T> *y)
+
+// A utility function to print postorder traversal
+// of the tree.
+// The function also prints height of every node
+template<class T>
+void BinaryTree<T>::postOrder(Node<T>* p)
 {
-    y->setRight(rightRotate(y->getRight()));
-    return leftRotate(y);
+    if (p != nullptr)
+    {
+        postOrder(p->getLeft());
+        postOrder(p->getRight());
+        cout << p->getValue() << " ";
+    }
 }
+
+
+
+
+#include "../Source/BinaryTree.cpp"
+
+#endif
