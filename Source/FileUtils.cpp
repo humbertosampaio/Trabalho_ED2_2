@@ -254,20 +254,16 @@ vector<int> FileUtils::readInputFile(string path)
 	else
 	{
 		cout << "ERRO na leitura do arquivo de entrada!" << endl;
-		cout << "Verifique se o arquivo entrada.txt esta no diretorio indicado na execucao" << endl;
 		cout << "O caminho tentado foi: \"" << path << "\"." << endl;
-		cout << "VERIFIQUE tambem se digitou o nome do diretorio path corretamente." << endl;
-		cout << "Estamos considerando o diretorio do executavel caso nao tenha informado o path" << endl;
-		cout << "Obs: o arquivo \"entrada.txt\" precisa estar no path informado na execucao do programa." << endl;
+		cout << "Verifique se o arquivo de entrada se encontra no mesmo diretorio do executavel" << endl;
 		pauseScreen(true);
 		endProgram();
 	}
 	return vector;
 }
 
-void FileUtils::writeToOutputFile(string text)
+void FileUtils::writeToOutputFile(const string &outputFileName, const string &text)
 {
-	string outputFileName = "saida.txt";
 	ofstream writer(outputFileName, ios::app);
 	if (writer.is_open())
 	{
@@ -281,7 +277,7 @@ void FileUtils::writeToOutputFile(string text)
 
 void FileUtils::endProgram()
 {
-    cout << "\n\n*---------------------------------------------------------------------------------*" << endl;
+    cout << "\n*---------------------------------------------------------------------------------*" << endl;
 	cout << "*                  --             FIM DO PROGRAMA             --                  *" << endl;
 	cout << "*                    Os resultados dos testes foram salvos no                     *" << endl;
 	cout << "*               arquivo \"saida.txt\" dentro do path do executavel.                 *" << endl;
@@ -304,9 +300,9 @@ void FileUtils::pauseScreen(bool continuar)
 void FileUtils::showTop()
 {
     cout << "         --------------------------------------------------" << endl;
-    cout << "            --------------------------------------------" << endl;
-    cout << "            -  -  Trabalho de Estrutura de Dados 2  -  -" << endl;
-    cout << "            --------------------------------------------" << endl;
+    cout << "         -  --------------------------------------------  -" << endl;
+    cout << "         -  -  -  Trabalho de Estrutura de Dados 2  -  -  -" << endl;
+    cout << "         -  --------------------------------------------  -" << endl;
     cout << "         --------------------------------------------------" << endl;
     cout << "         ---------          -> AUTORES <-         ---------" << endl;
     cout << "         --------            Edson Lopes        -----------" << endl;
@@ -314,10 +310,10 @@ void FileUtils::showTop()
     cout << "         ------------       Luis Henrique     -------------" << endl;
     cout << "         ----------        Vinicius Carlos       ----------" << endl;
     cout << "         --------------------------------------------------" << endl;
-    cout << "         --------------------------------------------------" << endl << endl;
+    cout << "         --------------------------------------------------" << endl;
 	pauseScreen(true);
     cout << "---------------------------- INFORMACOES ----------------------------" << endl;
-    cout << "-> Os arquivos de saida serão gerados no diretorio do executavel." << endl;
+    cout << "-> Os arquivos de saida serão gerados no diretorio do executavel" << endl;
 	cout << "-> Os arquivos de entrada precisam estar no diretorio do executavel" << endl;
     cout << "-> Para executar use: <./NomeDoExecutavelCompilado> <path>" << endl;
 	cout << "-> Caso nao passe a path por linha de comando, o diretorio onde esta" << endl;
@@ -327,17 +323,3 @@ void FileUtils::showTop()
     cout << "---------------------------- INFORMACOES ----------------------------" << endl;
     pauseScreen(true);
 }
-
-void FileUtils::showMenu()
-{
-	cout << endl << endl;
-	cout << "" << endl;
-	cout << "" << endl;
-	cout << "" << endl;
-	cout << "" << endl;
-	cout << "" << endl;
-	cout << "" << endl;
-}
-
-
-

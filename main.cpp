@@ -1,11 +1,15 @@
 #include <cstring>
 #include <BTree.h>
 #include "Headers/FileUtils.h"
+#include "Source/QuickSort.cpp"
 #include "Source/BinaryTree.cpp"
 #include "Source/SplayTree.cpp"
 #include "Source/AvlTree.cpp"
 #include "Source/RBTree.cpp"
 #include "Source/BTree.cpp"
+
+
+#define RANDOM_SEED std::chrono::system_clock::now().time_since_epoch().count()
 
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
 
@@ -20,7 +24,7 @@ struct Variables
     vector<Tag> tagVector;
     vector<int> intVector;
 
-    string sourceFileName;
+    //string sourceFileName;
     string path;
     string questionPath;
     string answerPath;
@@ -28,8 +32,8 @@ struct Variables
 
     vector<int> Ns;
     unsigned long N;
-    int section;
-    int cenary;
+    //int section;
+    //int cenary;
     int entry;
 
     void entryPath(string _path) {
@@ -37,16 +41,26 @@ struct Variables
         if (path[path.size() - 1] != '\\' && path[path.size() - 1] != '/' && !path.empty())
             path.push_back('/');
         if(!path.empty())
+        {
             cout << "Path informado: " << path << endl;
+            cout << "---------------------------------------------------------------------------------\n\n";
+        }
         else
-            cout << "Como nao foi informado a path, consideraremos o diretorio do executavel como path" << endl;
+        {
+            cout << "Como nao foi informado a path, consideraremos o diretorio do executavel como path\n";
+            cout << "---------------------------------------------------------------------------------\n\n";
+        }
         questionPath = path + "pythonquestions/Questions.csv";
         answerPath = path + "pythonquestions/Answers.csv";
         tagPath = path + "pythonquestions/Tags.csv";
-        sourceFileName = path + "entrada.txt";
+        //sourceFileName = path + "entrada.txt";
     }
 };
 
+void openMenu(Variables &vars);
+void geraAVL(Variables &vars);
+vector<int> getVetQuestionsIdRand(vector<Question> &vetQuestions, const int &n);
+vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n);
 
 void testViniman()
 {
@@ -93,7 +107,7 @@ void testViniman()
     */
 
     AvlTree<int> avl;
-    //avl.modifydAvl(false);
+    avl.modifydAvl(true);
     avl.insert(9);
     avl.insert(8);
     avl.insert(10);
@@ -217,8 +231,8 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-    ofstream saida;
-    saida.open("saida.txt", ios::app);
+    //ofstream saida;
+    /*saida.open("saida.txt", ios::app);
     saida << left << setw(12)<< left << "frequencia" << setw(12) << "Tags\n";
     for (int i = 0; i < 10; ++i)
         saida << left << setw(12) << 100 << setw(25) << 20 << endl;
@@ -226,7 +240,7 @@ int main(int argc, char** argv)
     saida << setw(12)<< left << "frequencia" << setw(12) << "UserIDs\n";
     for (int i = 0;i < 10; ++i)
         saida << left << setw(12)<< 100 << setw(12) << 20 << endl;
-
+*/
 
     FileUtils::showTop();
 
@@ -244,9 +258,7 @@ int main(int argc, char** argv)
 
     Variables vars;
     vars.entryPath(argc==1 ? "" : argv[1]);
-    vars.Ns = FileUtils::readInputFile(vars.sourceFileName);
-    vars.N = vars.Ns.size();
-    FileUtils::clearFileContent("saida.txt");
+
 
     if(vars.questionVector.empty())
         FileUtils::readFileQuestion(vars.questionPath, vars.questionVector);
@@ -254,6 +266,10 @@ int main(int argc, char** argv)
         FileUtils::readFileTag(vars.tagPath, vars.tagVector);
     if(vars.answerVector.empty())
         FileUtils::readFileAnswer(vars.answerPath, vars.answerVector);
+
+
+    openMenu(vars);
+
     return 0;
 }
 
@@ -269,20 +285,20 @@ void openMenu(Variables &vars)
     cout << "Opcao 0: Sair e encerrar a execucao" << endl;
     cout << "Opcao 1: Gerar uma arvore AVL" << endl;
     cout << "Opcao 2: Gerar uma arvore AVL Modificada [Balanceada se fb esta entre -3 e 3]" << endl;
-    cout << "Opcao 2: Gerar uma arvore Vermelho e Preta" << endl;
-    cout << "Opcao 2: Gerar uma arvore Splay" << endl;
-    cout << "Opcao 2: Gerar uma arvore B" << endl;
-    cout << "Opcao 2: Gerar uma arvore ..... (MinhaArvoreDeBalanceamento)" << endl;
+    cout << "Opcao 3: Gerar uma arvore Vermelho e Preta" << endl;
+    cout << "Opcao 4: Gerar uma arvore Splay" << endl;
+    cout << "Opcao 5: Gerar uma arvore B" << endl;
+    cout << "Opcao 6: Gerar uma arvore ..... (MinhaArvoreDeBalanceamento)" << endl;
     cout << "----------" << endl;
     cout << "Opcao: ";
-    cin >> vars.section;
+    cin >> vars.entry;
     cout << "||---------------------------------------------------------------------------------||" << endl;
-    switch (vars.section)
+    switch (vars.entry)
     {
         case 0:
             FileUtils::endProgram();
         case 1: /// Secao 1
-            //section1(vars);
+            geraAVL(vars);
             break;
         case 2: /// Secao 2
             int param;
@@ -303,6 +319,85 @@ void openMenu(Variables &vars)
     }
     executarNovamente == 'S' || executarNovamente == 's' ? openMenu(vars) : FileUtils::endProgram();
 }
+
+
+void geraAVL(Variables &vars)
+{
+    vars.Ns = FileUtils::readInputFile("entradaInsercao.txt");
+    vars.N = vars.Ns.size();
+    FileUtils::clearFileContent("saidaInsercao.txt");
+
+
+    string str = "----------------------------------------------------";
+    str += "\nGeracao de Arvores AVL.";
+    str += "\n----------------------------------------------------";
+
+    vars.intVector.clear();
+    for (int i = 0; i < vars.N; i++)
+    {
+        str += "\nExperimento " + to_string(i+1) + ": N = " + to_string(vars.Ns[i]);
+        cout << "\nExperimento " << to_string(i+1) << ": N = " << to_string(vars.Ns[i]) << endl;
+        for(int j = 1; j <= 5; j++)
+        {
+            str += "Iteracao " + to_string(j);
+            cout << "Iteracao " << to_string(j) << endl;
+            vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+            AvlTree<Question> avlTreeQuestion;
+            for(int k = 0; k<vars.Ns[i]; k++)
+            {
+                avlTreeQuestion.insert(tempVectorQuestions[k]);
+            }
+        }
+    }
+    FileUtils::writeToOutputFile("saidaInsercao.txt", str);
+}
+
+void geraAVLModificada()
+{
+
+}
+
+void geraVermelhoPreta()
+{
+
+}
+
+void geraSplay()
+{
+
+}
+
+void geraB()
+{
+
+}
+
+void buscaUsuariosMaisFrequentes()
+{
+
+}
+
+void buscaUsuariosMenosFrequentes()
+{
+
+}
+
+void buscaUsuariosAleatorios()
+{
+
+}
+
+void remocaoAleatorios()
+{
+
+}
+
+void remocaoOrdenados()
+{
+
+}
+
+/*
 
 void section1(Variables &vars) {
     if(vars.questionVector.empty())
@@ -340,4 +435,77 @@ void section1(Variables &vars) {
                 section1(vars);
         }
     } while (vars.cenary >= 1 && vars.cenary <= 4);
+}
+*/
+
+
+vector<int> getVetQuestionsIdRand(vector<Question> &vetQuestions, const int &n)
+{
+    /**
+     * ifdef utilizando #define para RANDOM_SEED feito no inicio do arquivo da main.cpp
+     * para escolher o metodo de geracao de seed que melhor se enquadr para Windows ou Linux
+     */
+    long seed = RANDOM_SEED;
+    std::mt19937 eng(seed); // seed the generator
+    uniform_int_distribution<unsigned long> distAleatoria(0, vetQuestions.size() - 1);///distribuicao uniforme aleatoria
+
+    vector<int> questionsIds; ///Usado para nao ter registro com id repetido
+    questionsIds.reserve((vetQuestions.size()));
+    for (auto &it : vetQuestions)
+        questionsIds.push_back(it.getQuestionId());
+
+    vector<int> vetQuestionsAleatorio; /// Vector de questions gerados aleatoriamente
+    vetQuestionsAleatorio.reserve(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        unsigned int indice;
+        do
+        {
+            indice = distAleatoria(eng);
+        } while (questionsIds[indice] == -1);
+        vetQuestionsAleatorio.push_back(questionsIds[indice]);
+        questionsIds[indice] = -1;
+    }
+    //FileUtils::writeToOutputFile("Seed: " + to_string(seed));
+    return vetQuestionsAleatorio;
+}
+
+vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n)
+{
+    /**
+     * ifdef utilizando #define para RANDOM_SEED feito no inicio do arquivo da main.cpp
+     * para escolher o metodo de geracao de seed que melhor se enquadr para Windows ou Linux
+     */
+    long seed = RANDOM_SEED;
+    std::mt19937 eng(seed); // seed the generator
+    uniform_int_distribution<unsigned long> distAleatoria(0, vetQuestions.size() - 1);///distribuicao uniforme aleatoria
+
+    vector<int> questionsIds; ///Usado para nao ter registro com id repetido
+    questionsIds.reserve((vetQuestions.size()));
+    for (auto &it : vetQuestions)
+        questionsIds.push_back(it.getQuestionId());
+
+    vector<Question> vetQuestionsAleatorio; /// Vector de questions gerados aleatoriamente
+    vetQuestionsAleatorio.reserve(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        unsigned int indice;
+        do
+        {
+            indice = distAleatoria(eng);
+        } while (questionsIds[indice] == -1);
+        vetQuestionsAleatorio.push_back(vetQuestions[indice]);
+        questionsIds[indice] = -1;
+    }
+    //FileUtils::writeToOutputFile("Seed: " + to_string(seed));
+    return vetQuestionsAleatorio;
+}
+
+template<class T> void printVector(const vector<T> &vector)
+{
+    for (const auto &it : vector)
+        cout << it << " ";
+    cout << endl << endl;
 }

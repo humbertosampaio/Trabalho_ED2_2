@@ -10,7 +10,7 @@
 template<class T>
 BinaryTree<T>::BinaryTree()
 {
-	cout << "Construindo Binary Tree" << endl;
+	//cout << "Construindo Binary Tree" << endl;
     root = nullptr;
 }
 
