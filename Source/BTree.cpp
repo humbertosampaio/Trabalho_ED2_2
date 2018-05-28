@@ -231,3 +231,8 @@ void BTree<T>::inOrder(NodeB<T>* p)
 }
 
 
+template<class T>
+void BTree<T>::remove(T key)
+{
+
+}

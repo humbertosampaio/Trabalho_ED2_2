@@ -90,7 +90,7 @@ AvlNode<T>* AvlTree<T>::auxRemove(AvlNode<T>* p, T val)
 {
 	if (p == nullptr)
 	{
-		cout << "Valor " << val << " nao existe!" << endl;
+		//cout << "Valor " << val << " nao existe!" << endl;
 		return p;
 	}
 

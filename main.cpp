@@ -12,9 +12,12 @@
 
 #define RANDOM_SEED std::chrono::system_clock::now().time_since_epoch().count()
 
-#define ENTRADA_INSERCAO 1
-#define ENTRADA_BUSCA 2
-#define ENTRADA_REMOCAO 3
+#define AVL_TREE 1
+#define AVL_MOD_TREE 2
+#define RB_TREE 3
+#define SPLAY_TREE 4
+#define B_TREE 5
+#define NOSSA_TREE 6
 
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
 
@@ -62,14 +65,19 @@ void insercao(Variables &vars);
 void buscaUsuariosMaisFrequentes(Variables &vars);
 void buscaUsuariosMenosFrequentes(Variables &vars);
 void buscaUsuariosAleatorios(Variables &vars);
-void remocaoAleatorios(Variables &vars);
-void remocaoOrdenados(Variables &vars);
+void remocao(Variables &vars, bool ordenado);
 void geraAVL(Variables &vars);
 void geraAVLModificada(Variables &vars);
 void geraVermelhoPreta(Variables &vars);
 void geraSplay(Variables &vars);
 void geraB(Variables &vars);
 void geraNossaArvoreBalanc(Variables &vars);
+void remocaoAVL(Variables &vars, bool ordenado);
+void remocaoAVLModificada(Variables &vars, bool ordenado);
+void remocaoVermelhoPreta(Variables &vars, bool ordenado);
+void remocaoSplay(Variables &vars, bool ordenado);
+void remocaoB(Variables &vars, bool ordenado);
+void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado);
 vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n);
 
 void testViniman()
@@ -270,9 +278,9 @@ void openMenu(Variables &vars)
 	cout << "||     Opcao 5: Estatisticas de Remocao - Questions Aleatórias                 ||" << endl;
 	cout << "||     Opcao 6: Estatisticas de Remocao - Questions Ordenadas                  ||" << endl;
 	cout << "||-----------------------------------------------------------------------------||" << endl;
-	cout << "Opcao: ";
+	cout << "||     Opcao: ";
 	cin >> vars.entry;
-	cout << "||---------------------------------------------------------------------------------||" << endl;
+	cout << "||-----------------------------------------------------------------------------||" << endl;
 	switch (vars.entry)
 	{
 		case 0:
@@ -290,10 +298,10 @@ void openMenu(Variables &vars)
 			buscaUsuariosAleatorios(vars);
 			break;
 		case 5:
-			remocaoAleatorios(vars);
+			remocao(vars, false);
 			break;
 		case 6:
-			remocaoOrdenados(vars);
+			remocao(vars, true);
 		default:
 			cout << "Opcao invalida. Tente novamente:" << endl;
 			openMenu(vars);
@@ -317,11 +325,8 @@ void openMenu(Variables &vars)
 
 void insercao(Variables &vars)
 {
-	if(vars.Ns.empty())
-	{
-		vars.Ns = FileUtils::readInputFile("entradaInsercao.txt");
-		vars.N = vars.Ns.size();
-	}
+	vars.Ns = FileUtils::readInputFile("entradaInsercao.txt");
+	vars.N = vars.Ns.size();
 	while(true)
 	{
 		cout << "---------------------------------------------------------------------------------" << endl;
@@ -370,36 +375,78 @@ void insercao(Variables &vars)
 
 void buscaUsuariosMaisFrequentes(Variables &vars)
 {
-
+	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
+	vars.N = vars.Ns.size();
 }
 
 void buscaUsuariosMenosFrequentes(Variables &vars)
 {
-
+	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
+	vars.N = vars.Ns.size();
 }
 
 void buscaUsuariosAleatorios(Variables &vars)
 {
-
+	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
+	vars.N = vars.Ns.size();
 }
 
-void remocaoAleatorios(Variables &vars)
+void remocao(Variables &vars, bool ordenado)
 {
-
-}
-
-void remocaoOrdenados(Variables &vars)
-{
-
+	vars.Ns = FileUtils::readInputFile("entradaRemocao.txt");
+	vars.N = vars.Ns.size();
+	while(true)
+	{
+		cout << "---------------------------------------------------------------------------------" << endl;
+		cout << "||            TRABALHO DE ESTRUTURA DE DADOS 2 - MENU DE ESCOLHAS              ||" << endl;
+		cout << "---------------------------------------------------------------------------------" << endl;
+		cout << "||     REMOCAO DE QUESTIONS ALEATORIOS - INSIRA O CODIGO DA OPCAO ESCOLHIDA    ||" << endl;
+		cout << "Opcao 0: Voltar ao menu inicial" << endl;
+		cout << "Opcao 1: Remover elementos em arvore AVL" << endl;
+		cout << "Opcao 2: Remover elementos em arvore AVL Modificada" << endl;
+		cout << "Opcao 3: Remover elementos em arvore Vermelho e Preta" << endl;
+		cout << "Opcao 4: Remover elementos em arvore Splay" << endl;
+		cout << "Opcao 5: Remover elementos em arvore B" << endl;
+		cout << "Opcao 6: Remover elementos em arvore ..... (MinhaArvoreDeBalanceamento)" << endl;
+		cout << "----------" << endl;
+		cout << "Opcao: ";
+		cin >> vars.entry;
+		cout << "---------------------------------------------------------------------------------" << endl;
+		switch (vars.entry)
+		{
+			case 0:
+				openMenu(vars);
+			case 1:
+				remocaoAVL(vars, ordenado);
+				break;
+			case 2:
+				remocaoAVLModificada(vars, ordenado);
+				break;
+			case 3:
+				remocaoVermelhoPreta(vars, ordenado);
+				break;
+			case 4:
+				remocaoSplay(vars, ordenado);
+				break;
+			case 5:
+				remocaoB(vars, ordenado);
+				break;
+			case 6:
+				remocaoNossaArvoreBalanc(vars, ordenado);
+				break;
+			default:
+				cout << "Opcao invalida. Tente novamente:" << endl;
+				remocao(vars, ordenado);
+		}
+	}
 }
 
 void geraAVL(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nGeracao e insercao em Arvores AVL.";
+	str += "\nGeracao e insercao em Arvore AVL.";
 	str += "\n----------------------------------------------------";
 
-	vars.intVector.clear();
 	for (int i = 0; i < vars.N; i++)
 	{
 		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
@@ -427,10 +474,9 @@ void geraAVL(Variables &vars)
 void geraAVLModificada(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nGeracao e insercao em Arvores AVL Modificada.";
+	str += "\nGeracao e insercao em Arvore AVL Modificada.";
 	str += "\n----------------------------------------------------";
 
-	vars.intVector.clear();
 	for (int i = 0; i < vars.N; i++)
 	{
 		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
@@ -461,10 +507,9 @@ void geraAVLModificada(Variables &vars)
 void geraVermelhoPreta(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nGeracao e insercao em Arvores Vermelho e preta.";
+	str += "\nGeracao e insercao em Arvore Vermelho e preta.";
 	str += "\n----------------------------------------------------";
 
-	vars.intVector.clear();
 	for (int i = 0; i < vars.N; i++)
 	{
 		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
@@ -492,10 +537,9 @@ void geraVermelhoPreta(Variables &vars)
 void geraSplay(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nGeracao e insercao em Arvores Splay.";
+	str += "\nGeracao e insercao em Arvore Splay.";
 	str += "\n----------------------------------------------------";
 
-	vars.intVector.clear();
 	for (int i = 0; i < vars.N; i++)
 	{
 		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
@@ -523,10 +567,9 @@ void geraSplay(Variables &vars)
 void geraB(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nGeracao e insercao em Arvores B.";
+	str += "\nGeracao e insercao em Arvore B.";
 	str += "\n----------------------------------------------------";
 
-	vars.intVector.clear();
 	for (int i = 0; i < vars.N; i++)
 	{
 		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
@@ -553,11 +596,15 @@ void geraB(Variables &vars)
 
 void geraNossaArvoreBalanc(Variables &vars)
 {
-	string str = "\n--------------------------------------------------------";
-	str += "\nGeracao e insercao em Arvores *** (Nossa).";
-	str += "\n-------------------------------------------------------";
 
-	vars.intVector.clear();
+}
+
+void remocaoAVL(Variables &vars, bool ordenado)
+{
+	string str = "\n----------------------------------------------------";
+	str += "\nRemocao em Arvore AVL";
+	str += "\n----------------------------------------------------";
+
 	for (int i = 0; i < vars.N; i++)
 	{
 		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
@@ -566,22 +613,231 @@ void geraNossaArvoreBalanc(Variables &vars)
 		{
 			str += "Iteracao " + to_string(j) + "\n";
 			cout << "Iteracao " << to_string(j) << endl;
-			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
-			///NOSSA ARVORE AQUI AvlTree<Question> avlTreeQuestion;
 
-			CompareCount::initializeCounters("Árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
-			CompareCount::setTimeStart();
+			///Inserindo Questoes na Arvore
+			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			AvlTree<Question> avlTreeQuestion;
+
+			cout << "Inserindo Questions na arvore...\n";
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
-				///NOSSA ARVORE AQUI avlTreeQuestion.insert(tempVectorQuestions[k]);
+				avlTreeQuestion.insert(tempVectorQuestions[k]);
+			}
+
+			///Remocao de Questoes na arvore
+			tempVectorQuestions.clear();
+			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			if(ordenado) {
+				QuickSort::quickSort(tempVectorQuestions);
+			}
+
+			CompareCount::initializeCounters("Remocao em Árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
+
+			cout << "Removendo Questions da arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				avlTreeQuestion.remove(tempVectorQuestions[k]);
 			}
 			CompareCount::timeEnd();
 			str += CompareCount::getDataString();
 		}
 	}
-	FileUtils::writeToOutputFile("saidaInsercao.txt", str);
+	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
+void remocaoAVLModificada(Variables &vars, bool ordenado)
+{
+	string str = "\n----------------------------------------------------";
+	str += "\nRemocao em Arvore AVL Modificada";
+	str += "\n----------------------------------------------------";
+
+	for (int i = 0; i < vars.N; i++)
+	{
+		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
+		cout << "\nExperimento " << to_string(i + 1) << ": N = " << to_string(vars.Ns[i]) << endl;
+		for (int j = 1; j <= 5; j++)
+		{
+			str += "Iteracao " + to_string(j) + "\n";
+			cout << "Iteracao " << to_string(j) << endl;
+
+			///Inserindo Questoes na Arvore
+			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			AvlTree<Question> avlModifiedTreeQuestion(true);
+
+			cout << "Inserindo Questions na arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				avlModifiedTreeQuestion.insert(tempVectorQuestions[k]);
+			}
+
+			///Remocao de Questoes na arvore
+			tempVectorQuestions.clear();
+			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			if(ordenado) {
+				QuickSort::quickSort(tempVectorQuestions);
+			}
+
+			CompareCount::initializeCounters("Remocao em Árvore AVL Modificada", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
+
+			cout << "Removendo Questions da arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				avlModifiedTreeQuestion.remove(tempVectorQuestions[k]);
+			}
+			CompareCount::timeEnd();
+			str += CompareCount::getDataString();
+		}
+	}
+	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
+}
+
+void remocaoVermelhoPreta(Variables &vars, bool ordenado)
+{
+	string str = "\n----------------------------------------------------";
+	str += "\nRemocao em Arvore Vermelho e Preta";
+	str += "\n----------------------------------------------------";
+
+	for (int i = 0; i < vars.N; i++)
+	{
+		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
+		cout << "\nExperimento " << to_string(i + 1) << ": N = " << to_string(vars.Ns[i]) << endl;
+		for (int j = 1; j <= 5; j++)
+		{
+			str += "Iteracao " + to_string(j) + "\n";
+			cout << "Iteracao " << to_string(j) << endl;
+
+			///Inserindo Questoes na Arvore
+			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			RBTree<Question> rbTreeQuestion;
+
+			cout << "Inserindo Questions na arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				rbTreeQuestion.insert(tempVectorQuestions[k]);
+			}
+
+			///Remocao de Questoes na arvore
+			tempVectorQuestions.clear();
+			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			if(ordenado) {
+				QuickSort::quickSort(tempVectorQuestions);
+			}
+
+			CompareCount::initializeCounters("Remocao em Árvore Vermelho e Preta", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
+
+			cout << "Removendo Questions da arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				rbTreeQuestion.remove(tempVectorQuestions[k]);
+			}
+			CompareCount::timeEnd();
+			str += CompareCount::getDataString();
+		}
+	}
+	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
+}
+
+void remocaoSplay(Variables &vars, bool ordenado)
+{
+	string str = "\n----------------------------------------------------";
+	str += "\nRemocao em Arvore Splay";
+	str += "\n----------------------------------------------------";
+
+	for (int i = 0; i < vars.N; i++)
+	{
+		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
+		cout << "\nExperimento " << to_string(i + 1) << ": N = " << to_string(vars.Ns[i]) << endl;
+		for (int j = 1; j <= 5; j++)
+		{
+			str += "Iteracao " + to_string(j) + "\n";
+			cout << "Iteracao " << to_string(j) << endl;
+
+			///Inserindo Questoes na Arvore
+			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			SplayTree<Question> splayTreeQuestion;
+
+			cout << "Inserindo Questions na arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				splayTreeQuestion.insert(tempVectorQuestions[k]);
+			}
+
+			///Remocao de Questoes na arvore
+			tempVectorQuestions.clear();
+			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			if(ordenado) {
+				QuickSort::quickSort(tempVectorQuestions);
+			}
+
+			CompareCount::initializeCounters("Remocao em Árvore Splay", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
+
+			cout << "Removendo Questions da arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				splayTreeQuestion.remove(tempVectorQuestions[k]);
+			}
+			CompareCount::timeEnd();
+			str += CompareCount::getDataString();
+		}
+	}
+	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
+}
+
+void remocaoB(Variables &vars, bool ordenado)
+{
+	string str = "\n----------------------------------------------------";
+	str += "\nRemocao em Arvore B";
+	str += "\n----------------------------------------------------";
+
+	for (int i = 0; i < vars.N; i++)
+	{
+		str += "\nExperimento " + to_string(i + 1) + ": N = " + to_string(vars.Ns[i]) + "\n\n";
+		cout << "\nExperimento " << to_string(i + 1) << ": N = " << to_string(vars.Ns[i]) << endl;
+		for (int j = 1; j <= 5; j++)
+		{
+			str += "Iteracao " + to_string(j) + "\n";
+			cout << "Iteracao " << to_string(j) << endl;
+
+			///Inserindo Questoes na Arvore
+			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			BTree<Question> bTreeQuestion;
+
+			cout << "Inserindo Questions na arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				bTreeQuestion.insert(tempVectorQuestions[k]);
+			}
+
+			///Remocao de Questoes na arvore
+			tempVectorQuestions.clear();
+			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+			if(ordenado) {
+				QuickSort::quickSort(tempVectorQuestions);
+			}
+
+			CompareCount::initializeCounters("Remocao em Árvore B", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
+
+			cout << "Removendo Questions da arvore...\n";
+			for (int k = 0; k < vars.Ns[i]; k++)
+			{
+				bTreeQuestion.remove(tempVectorQuestions[k]);
+			}
+			CompareCount::timeEnd();
+			str += CompareCount::getDataString();
+		}
+	}
+	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
+}
+
+void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado)
+{
+
+}
 
 
 vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n)

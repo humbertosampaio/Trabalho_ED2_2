@@ -29,6 +29,8 @@ template <class T> class BTree
 	void imprimePorNivel(NodeB<T> *p, int nivel);
 	void inOrder();
 	void inOrder(NodeB<T> *p);
+
+    void remove(T key);
 };
 
 

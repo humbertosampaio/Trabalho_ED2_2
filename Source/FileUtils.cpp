@@ -279,8 +279,8 @@ void FileUtils::endProgram()
 {
     cout << "\n*---------------------------------------------------------------------------------*" << endl;
 	cout << "*                  --             FIM DO PROGRAMA             --                  *" << endl;
-	cout << "*                    Os resultados dos testes foram salvos no                     *" << endl;
-	cout << "*               arquivo \"saida.txt\" dentro do path do executavel.                 *" << endl;
+	cout << "*                    Os resultados dos testes foram salvos nos                    *" << endl;
+	cout << "*                  arquivo de saida dentro do path do executavel                  *" << endl;
 	cout << "**Obs: Salve seu arquivo de saida, pois ele sera sobreescrito na proxima execucao**" << endl;
 	cout << "*---------------------------------------------------------------------------------*" << endl;
 	pauseScreen(false);
