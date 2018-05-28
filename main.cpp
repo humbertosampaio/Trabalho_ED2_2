@@ -160,16 +160,39 @@ void testViniman()
 void testEdson()
 {
     RBTree<int> rb;
+    srand(10);
     int random;
+    vector<int> vet;
+/*
     for (int i = 0; i < 10; ++i)
     {
         random = rand()%100;
         cout << random << " ";
+        vet.push_back(random);
         rb.insert(random);
     }
     cout << endl;
     rb.print();
-    rb.remove(58);
+    int var;
+
+    for (int i = 0 ; i < 9; ++i)
+    {
+            var = *(vet.begin()+(rand()%vet.size()));
+        cout << var << endl;
+        rb.remove(var);
+    }
+*/
+    rb.insert(50);
+    rb.insert(25);
+    rb.insert(75);
+    rb.insert(12);
+    rb.insert(60);
+    rb.insert(100);
+    rb.insert(65);
+    rb.print();
+    rb.remove(12);
+    rb.print();
+    rb.remove(25);
     rb.print();
 }
 

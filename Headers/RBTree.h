@@ -19,7 +19,7 @@ public:
     void remove (T value);
     void print ();
 
-private:
+public:
     NodeRB<T>* root;
 
 private: //funcoes auxiliares
@@ -32,7 +32,7 @@ private: //funcoes auxiliares
     NodeRB<T>* maiorSubArvEsq(NodeRB<T>* node);
     void printByLevel(NodeRB<T>* node, int level);
     void fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode);
-    void fixRemove(NodeRB<T> *&node, NodeRB<T> *& parent);
+    void fixRemove(NodeRB<T> *&node, NodeRB<T> * parent);
     void removeCase1 (NodeRB<T> *&node, NodeRB<T> *& parent);
 
     void rotateRight(NodeRB<T> *&root, NodeRB<T> *&newNode);
