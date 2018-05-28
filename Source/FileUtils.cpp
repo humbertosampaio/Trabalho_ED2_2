@@ -14,7 +14,7 @@ void FileUtils::clearFileContent(string path)
 		writer << "Trabalho de Estrutura de Dados 2" << endl;
 		writer << "Autores: Edson, Humberto, Luis e Vinicius" << endl;
 		writer << "ANALISE DOS ALGORITMOS E BASE DE DADOS" << endl;
-		writer << "-----------------------------------------" << endl << endl;
+		writer << "-----------------------------------------" << endl;
 	}
 	else
 		cout << "Falha ao limpar o conteudo do arquivo \"" << path << "\"." << endl;

@@ -142,7 +142,7 @@ Node<T>* SplayTree<T>::auxInsert(Node<T>* p, T key)
 template <class T>
 void SplayTree<T>::insert(T key)
 {
-    root = auxInsert(root, key);
+    BinaryTree<T>::root = auxInsert(BinaryTree<T>::root, key);
 }
 
 template <class T>
@@ -180,13 +180,13 @@ Node<T>* SplayTree<T>::auxRemove(Node<T>* p, T key)
 template <class T>
 void SplayTree<T>::remove(T key)
 {
-    root = auxRemove(root, key);
+    BinaryTree<T>::root = auxRemove(BinaryTree<T>::root, key);
 }
 
 template <class T>
 bool SplayTree<T>::search(T key)
 {
     //É feito o splay e caso o elemento procurado exista ele sobe para a raiz
-    root = splay(root, key);
-    return (root->getValue() == key);
+    BinaryTree<T>::root = splay(BinaryTree<T>::root, key);
+    return (BinaryTree<T>::root->getValue() == key);
 }

@@ -12,7 +12,7 @@ template <class T> class AvlTree : public BinaryTree<T>
 {
 	public:
 	AvlTree<T>();
-	AvlTree<T>(bool modified);
+	explicit AvlTree<T>(bool modified);
 	void insert(T val);
 	void remove(T val);
 	bool search(T val);

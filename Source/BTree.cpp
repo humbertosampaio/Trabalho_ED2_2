@@ -35,7 +35,7 @@ NodeB<T>** BTree<T>::getRaiz(){
 }
 
 template<class T>
-void BTree<T>::insere(T valor)
+void BTree<T>::insert(T valor)
 {
     if(raiz == nullptr) ///Se a arvore esta vazia, cria a raiz
     {
@@ -88,7 +88,7 @@ void BTree<T>::insereRecursivo(NodeB<T>* no, T valor)
         if(no->chave[k] < valor)
             k++;
         else if(no->chave[k] == valor)
-            return; //nao insere elementos de chaves iguais
+            return; //nao insert elementos de chaves iguais
         else
             break;
 

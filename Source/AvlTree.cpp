@@ -35,7 +35,7 @@ AvlTree<T>::AvlTree()
 }
 
 template<class T>
-AvlTree<T>::AvlTree<T>(bool modified)
+AvlTree<T>::AvlTree(bool modified)
 {
 	if (modified)
 	{

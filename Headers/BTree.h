@@ -18,7 +18,7 @@ template <class T> class BTree
 	public:
 	BTree<T>();
 	~BTree<T>();
-	void insere(T valor);
+	void insert(T valor);
 	bool find(T valor);
 	NodeB<T>* insereNo(NodeB<T> *no, T valor);
 	void insereRecursivo(NodeB<T> *no, T valor);
