@@ -35,7 +35,7 @@ NodeB<T>** BTree<T>::getRaiz(){
 }
 
 template<class T>
-void BTree<T>::insere(T valor)
+void BTree<T>::insert(T valor)
 {
     if(raiz == nullptr) ///Se a arvore esta vazia, cria a raiz
     {
@@ -77,6 +77,7 @@ NodeB<T> * BTree<T>::insereNo(NodeB<T> *no, T valor) ///Insere no 'no' o valor d
     }
     no->chave[k] = valor;
     no->tamanho++;
+	return no;
 }
 
 template<class T>
@@ -231,3 +232,8 @@ void BTree<T>::inOrder(NodeB<T>* p)
 }
 
 
+template<class T>
+void BTree<T>::remove(T key)
+{
+
+}

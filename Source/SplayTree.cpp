@@ -41,24 +41,24 @@ inline Node<T>* SplayTree<T>::RR_Rotate(Node<T>* k2)
 template <class T>
 Node<T>* SplayTree<T>::splay(Node<T>* p, T key)
 {
-    //Caso base onde ou a �rvore � vazia ou a chave da �rvore � a chave procurada
+    //Caso base onde ou a árvore é vazia ou a chave da árvore é a chave procurada
     if(p == nullptr || p->getValue() == key)
         return p;
 
-    //Neste caso a chave est� na sub�rvore a esquerda
+    //Neste caso a chave está na subárvore a esquerda
     if(p->getValue() > key)
     {
-        //Chave n�o est� na �rvore
+        //Chave não está na árvore
         if(p->getLeft() == nullptr)
             return p;
 
-        //Rota��o left-left
+        //Zig-zig
         if(p->getLeft()->getValue() > key)
         {
             p->getLeft()->setLeft(splay(p->getLeft()->getLeft(), key));
             p = LL_Rotate(p);
         }
-        //Rota��o left-right
+        //Zig-zag
         else if(p->getLeft()->getValue() < key)
         {
             p->getLeft()->setRight(splay(p->getLeft()->getRight(), key));
@@ -70,25 +70,24 @@ Node<T>* SplayTree<T>::splay(Node<T>* p, T key)
         if(p->getLeft() == nullptr)
             return p;
         return LL_Rotate(p);
-        //return ((p->getLeft() == nullptr) ? p : LL_Rotate(p));
     }
 
-    //Neste caso a chave est� na sub�rvore a direita
+    //Neste caso a chave está na subárvore a direita
     else
     {
-        //Chave n�o est� na �rvore
-        if(p->getRight() == NULL)
+        //Chave não está na árvore
+        if(p->getRight() == nullptr)
             return p;
 
-        //Rota��o right-left
+        //Zig-zag
         if(p->getRight()->getValue() > key)
         {
             p->getRight()->setLeft(splay(p->getRight()->getLeft(), key));
 
-            if(p->getRight()->getLeft() != NULL)
+            if(p->getRight()->getLeft() != nullptr)
                 p->setRight(LL_Rotate(p->getRight()));
         }
-        //Rota��o right-right
+        //Zig-zig
         else if(p->getRight()->getValue() < key)
         {
             p->getRight()->setRight(splay(p->getRight()->getRight(), key));
@@ -99,7 +98,6 @@ Node<T>* SplayTree<T>::splay(Node<T>* p, T key)
             return p;
         return RR_Rotate(p);
 
-        //return (p->getRight() == NULL) ? p : RR_Rotate(p);
     }
 
 
@@ -108,7 +106,7 @@ Node<T>* SplayTree<T>::splay(Node<T>* p, T key)
 template <class T>
 Node<T>* SplayTree<T>::auxInsert(Node<T>* p, T key)
 {
-    //Caso mais simples onde a �rvore est� vazia
+    //Caso mais simples onde a árvore está vazia
     if(p == nullptr){
         p = new Node<T>(key);
         return p;
@@ -116,9 +114,11 @@ Node<T>* SplayTree<T>::auxInsert(Node<T>* p, T key)
 
     p = splay(p, key);
 
+    //Se a chave já está presente então retorne
     if(p->getValue() == key)
         return p;
 
+    //Caso contrário um novo nó é criado pera armazenar o novo nó
     Node<T>* no = new Node<T>(key);
 
     if(p->getValue() > key)
@@ -135,13 +135,14 @@ Node<T>* SplayTree<T>::auxInsert(Node<T>* p, T key)
         p->setRight(nullptr);
     }
 
+    //Novo nó se torna a raiz
     return no;
 }
 
 template <class T>
 void SplayTree<T>::insert(T key)
 {
-    root = auxInsert(root, key);
+    BinaryTree<T>::root = auxInsert(BinaryTree<T>::root, key);
 }
 
 template <class T>
@@ -149,7 +150,7 @@ Node<T>* SplayTree<T>::auxRemove(Node<T>* p, T key)
 {
     Node<T>* no = new Node<T>;
 
-    //Caso mais simples onde a �rvore est� vazia
+    //Caso mais simples onde a árvore está vazia
     if(p == nullptr)
         return nullptr;
 
@@ -158,6 +159,7 @@ Node<T>* SplayTree<T>::auxRemove(Node<T>* p, T key)
     if(p->getValue() != key)
         return p;
 
+    //Se a raiz não possui filho a esquerda, seu filho a direita se torna a raiz
     if(p->getLeft() == nullptr)
     {
         no = p;
@@ -178,12 +180,13 @@ Node<T>* SplayTree<T>::auxRemove(Node<T>* p, T key)
 template <class T>
 void SplayTree<T>::remove(T key)
 {
-    root = auxRemove(root, key);
+    BinaryTree<T>::root = auxRemove(BinaryTree<T>::root, key);
 }
 
 template <class T>
 bool SplayTree<T>::search(T key)
 {
-    root = splay(root, key);
-    return (root->getValue() == key);
+    //É feito o splay e caso o elemento procurado exista ele sobe para a raiz
+    BinaryTree<T>::root = splay(BinaryTree<T>::root, key);
+    return (BinaryTree<T>::root->getValue() == key);
 }

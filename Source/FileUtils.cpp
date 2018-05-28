@@ -14,7 +14,7 @@ void FileUtils::clearFileContent(string path)
 		writer << "Trabalho de Estrutura de Dados 2" << endl;
 		writer << "Autores: Edson, Humberto, Luis e Vinicius" << endl;
 		writer << "ANALISE DOS ALGORITMOS E BASE DE DADOS" << endl;
-		writer << "-----------------------------------------" << endl << endl;
+		writer << "-----------------------------------------" << endl;
 	}
 	else
 		cout << "Falha ao limpar o conteudo do arquivo \"" << path << "\"." << endl;
@@ -279,8 +279,8 @@ void FileUtils::endProgram()
 {
     cout << "\n*---------------------------------------------------------------------------------*" << endl;
 	cout << "*                  --             FIM DO PROGRAMA             --                  *" << endl;
-	cout << "*                    Os resultados dos testes foram salvos no                     *" << endl;
-	cout << "*               arquivo \"saida.txt\" dentro do path do executavel.                 *" << endl;
+	cout << "*                    Os resultados dos testes foram salvos nos                    *" << endl;
+	cout << "*                  arquivo de saida dentro do path do executavel                  *" << endl;
 	cout << "**Obs: Salve seu arquivo de saida, pois ele sera sobreescrito na proxima execucao**" << endl;
 	cout << "*---------------------------------------------------------------------------------*" << endl;
 	pauseScreen(false);

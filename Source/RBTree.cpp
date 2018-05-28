@@ -344,25 +344,40 @@ void RBTree<T>::removeCase1(NodeRB<T> *&node, NodeRB<T> *& parent)
 
 
 template <class T>
-void RBTree<T>::fixRemove(NodeRB<T> *&node, NodeRB<T>*& parent) {
-    NodeRB<T>* brother = (node == parent->getRight() ? parent->getLeft() : parent->getRight());
-    while (node != root)
+void RBTree<T>::fixRemove(NodeRB<T> *&node, NodeRB<T>* parent) {
+    NodeRB<T> *brother = (node == parent->getRight() ? parent->getLeft() : parent->getRight());
+    if (node != root)
     {
         if (!brother->isRed())
         {
             if (brother->getRight()->isRed() || brother->getLeft()->isRed())
             {
                 removeCase1(node, parent);
-                break;
+            }
+            //caso 2, recursivo
+            else
+            {
+                brother->setRed(!brother->isRed());
+                if (parent->isRed())
+                    parent->setRed(false);
+                else
+                    fixRemove(parent, parent->getParent());
+            }
+        }
+        //caso 3
+        else
+        {
+            brother->setRed(!brother->isRed());
+            parent->setRed(!parent->isRed());
+            if (brother == parent->getLeft())
+            {
+                rotateRight(root, parent);
             }
             else
             {
-
+                rotateLeft(root, parent);
             }
-        }
-        else
-        {
-
+            fixRemove(parent,parent->getParent());
         }
     }
     root->setRed(false);

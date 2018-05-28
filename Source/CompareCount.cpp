@@ -7,7 +7,7 @@
 using namespace std;
 
 std::string CompareCount::nameOfAlgorithm;
-unsigned long CompareCount::sizeVector;
+unsigned long CompareCount::qntdElemnts;
 int CompareCount::countNumComparisons;
 int CompareCount::countNumCopias;
 clock_t CompareCount::timeStart;
@@ -20,12 +20,12 @@ bool CompareCount::runtimeCalc = true;
  * Seu código só executado se o tempo de execução (runtime) foi calculado (isso indica que já foi salvo os dados anteriores)
  * @param name: recebe uma string com o nome do algoritmo a salvar os dados
  */
-void CompareCount::initializeCounters(std::string name, unsigned long size)
+void CompareCount::initializeCounters(std::string name, unsigned long N)
 {
 	if (runtimeCalc)
 	{
 	    nameOfAlgorithm = name;
-	    sizeVector = size;
+		qntdElemnts = N;
 		countNumComparisons = 0;
 		countNumCopias = 0;
 		timeStart = 0;
@@ -85,10 +85,10 @@ void CompareCount::printData()
 string CompareCount::getDataString()
 {
 	string data = "Algoritmo: " + nameOfAlgorithm + "\n";
-	data += "Quantidade de elementos a ordenar: " + to_string(sizeVector) + "\n";
+	data += "Quantidade de elementos: " + to_string(qntdElemnts) + "\n";
 	data += "Comparacoes: " + to_string(countNumComparisons) + "\nCopias: " +
 			to_string(countNumCopias) + "\nTempo de Execução: ";
-	data += runtimeCalc ? (to_string(runtime) + "\n") : "Nao foi calculado\n";
+	data += runtimeCalc ? (to_string(runtime) + "\n\n") : "Nao foi calculado\n\n";
 
 	return data;
 }
