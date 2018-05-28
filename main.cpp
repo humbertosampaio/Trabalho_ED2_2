@@ -22,6 +22,10 @@
 #define B_TREE 5
 #define NOSSA_TREE 6
 
+#define BUSCA_MAIS_FREQ 2
+#define BUSCA_MENOS_FREQ 3
+#define BUSCA_ALEATORIOS 4
+
 /// ->>>>> Criar classe de impressao, para imprimir arvores, etc e tirar os metodos das classes arvores
 
 using namespace std;
@@ -40,7 +44,7 @@ struct Variables
 
 	vector<int> Ns;
 	unsigned long N;
-	int entry;
+	short entry;
 
 	void entryPath(string _path)
 	{
@@ -65,10 +69,8 @@ struct Variables
 
 void openMenu(Variables &vars);
 void insercao(Variables &vars);
-void buscaUsuariosMaisFrequentes(Variables &vars);
-void buscaUsuariosMenosFrequentes(Variables &vars);
-void buscaUsuariosAleatorios(Variables &vars);
 void remocao(Variables &vars, bool ordenado);
+void busca(Variables &vars);
 void geraAVL(Variables &vars);
 void geraAVLModificada(Variables &vars);
 void geraVermelhoPreta(Variables &vars);
@@ -81,6 +83,12 @@ void remocaoVermelhoPreta(Variables &vars, bool ordenado);
 void remocaoSplay(Variables &vars, bool ordenado);
 void remocaoB(Variables &vars, bool ordenado);
 void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado);
+void buscaAVL(Variables &vars, short &busca);
+void buscaAVLModificada(Variables &vars, short &busca);
+void buscaVermelhoPreta(Variables &vars, short &busca);
+void buscaSplay(Variables &vars, short &busca);
+void buscaB(Variables &vars, short &busca);
+void buscaNossaArvoreBalanc(Variables &vars, short &busca);
 vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n);
 
 void testViniman()
@@ -297,13 +305,13 @@ void openMenu(Variables &vars)
 			insercao(vars);
 			break;
 		case 2:
-			buscaUsuariosMaisFrequentes(vars);
+			busca(vars);
 			break;
 		case 3:
-			buscaUsuariosMenosFrequentes(vars);
+			busca(vars);
 			break;
 		case 4:
-			buscaUsuariosAleatorios(vars);
+			busca(vars);
 			break;
 		case 5:
 			remocao(vars, false);
@@ -340,15 +348,15 @@ void insercao(Variables &vars)
 		cout << "---------------------------------------------------------------------------------" << endl;
 		cout << "||            TRABALHO DE ESTRUTURA DE DADOS 2 - MENU DE ESCOLHAS              ||" << endl;
 		cout << "---------------------------------------------------------------------------------" << endl;
-		cout << "||                    INSIRA O CODIGO DA OPCAO ESCOLHIDA                       ||" << endl;
-		cout << "Opcao 0: Voltar ao menu inicial" << endl;
-		cout << "Opcao 1: Gerar uma arvore AVL" << endl;
-		cout << "Opcao 2: Gerar uma arvore AVL Modificada [Balanceada se fb esta entre -3 e 3]" << endl;
-		cout << "Opcao 3: Gerar uma arvore Vermelho e Preta" << endl;
-		cout << "Opcao 4: Gerar uma arvore Splay" << endl;
-		cout << "Opcao 5: Gerar uma arvore B" << endl;
-		cout << "Opcao 6: Gerar uma arvore ..... (MinhaArvoreDeBalanceamento)" << endl;
-		cout << "----------" << endl;
+		cout << "||         INSERCAO DE QUESTIONS - INSIRA O CODIGO DA OPCAO ESCOLHIDA          ||" << endl;
+		cout << "||  Opcao 0: Voltar ao menu inicial                                            ||" << endl;
+		cout << "||  Opcao 1: Gerar uma arvore AVL                                              ||" << endl;
+		cout << "||  Opcao 2: Gerar uma arvore AVL Modificada (FB pode estar entre -3 e 3)      ||" << endl;
+		cout << "||  Opcao 3: Gerar uma arvore Vermelho e Preta                                 ||" << endl;
+		cout << "||  Opcao 4: Gerar uma arvore Splay                                            ||" << endl;
+		cout << "||  Opcao 5: Gerar uma arvore B                                                ||" << endl;
+		cout << "||  Opcao 6: Gerar uma arvore Treap (NossaArvoreDeBalanceamento)               ||" << endl;
+		cout << "||  -------------------------------------------------------------------------  ||" << endl;
 		cout << "Opcao: ";
 		cin >> vars.entry;
 		cout << "---------------------------------------------------------------------------------" << endl;
@@ -381,24 +389,6 @@ void insercao(Variables &vars)
 	}
 }
 
-void buscaUsuariosMaisFrequentes(Variables &vars)
-{
-	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
-	vars.N = vars.Ns.size();
-}
-
-void buscaUsuariosMenosFrequentes(Variables &vars)
-{
-	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
-	vars.N = vars.Ns.size();
-}
-
-void buscaUsuariosAleatorios(Variables &vars)
-{
-	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
-	vars.N = vars.Ns.size();
-}
-
 void remocao(Variables &vars, bool ordenado)
 {
 	vars.Ns = FileUtils::readInputFile("entradaRemocao.txt");
@@ -408,15 +398,15 @@ void remocao(Variables &vars, bool ordenado)
 		cout << "---------------------------------------------------------------------------------" << endl;
 		cout << "||            TRABALHO DE ESTRUTURA DE DADOS 2 - MENU DE ESCOLHAS              ||" << endl;
 		cout << "---------------------------------------------------------------------------------" << endl;
-		cout << "||     REMOCAO DE QUESTIONS ALEATORIOS - INSIRA O CODIGO DA OPCAO ESCOLHIDA    ||" << endl;
-		cout << "Opcao 0: Voltar ao menu inicial" << endl;
-		cout << "Opcao 1: Remover elementos em arvore AVL" << endl;
-		cout << "Opcao 2: Remover elementos em arvore AVL Modificada" << endl;
-		cout << "Opcao 3: Remover elementos em arvore Vermelho e Preta" << endl;
-		cout << "Opcao 4: Remover elementos em arvore Splay" << endl;
-		cout << "Opcao 5: Remover elementos em arvore B" << endl;
-		cout << "Opcao 6: Remover elementos em arvore ..... (MinhaArvoreDeBalanceamento)" << endl;
-		cout << "----------" << endl;
+		cout << "||     REMOCAO DE QUESTIONS " << (ordenado?"ORDENADAS ":"ALEATORIAS") << " - INSIRA O CODIGO DA OPCAO ESCOLHIDA    ||" << endl;
+		cout << "||  Opcao 0: Voltar ao menu inicial                                            ||" << endl;
+		cout << "||  Opcao 1: Remover elementos em arvore AVL                                   ||" << endl;
+		cout << "||  Opcao 2: Remover elementos em arvore AVL Modificada (FB entre -3 e 3)      ||" << endl;
+		cout << "||  Opcao 3: Remover elementos em arvore Vermelho e Preta                      ||" << endl;
+		cout << "||  Opcao 4: Remover elementos em arvore Splay                                 ||" << endl;
+		cout << "||  Opcao 5: Remover elementos em arvore B                                     ||" << endl;
+		cout << "||  Opcao 6: Remover elementos em arvore Treap (NossaArvoreDeBalanceamento)    ||" << endl;
+		cout << "||  -------------------------------------------------------------------------  ||" << endl;
 		cout << "Opcao: ";
 		cin >> vars.entry;
 		cout << "---------------------------------------------------------------------------------" << endl;
@@ -447,6 +437,66 @@ void remocao(Variables &vars, bool ordenado)
 				remocao(vars, ordenado);
 		}
 	}
+}
+
+void busca(Variables &vars)
+{
+	short tempEscolhaBusca = vars.entry;
+	string tempBuscaStr;
+	if(tempEscolhaBusca == BUSCA_MAIS_FREQ)
+		tempBuscaStr = "MAIS FREQUENTES";
+	if(tempEscolhaBusca == BUSCA_MENOS_FREQ)
+		tempBuscaStr = "MENOS FREQUENTES";
+	if(tempEscolhaBusca == BUSCA_ALEATORIOS)
+		tempBuscaStr = "ALEATORIAS";
+
+	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
+	vars.N = vars.Ns.size();
+	while(true)
+	{
+		cout << "---------------------------------------------------------------------------------" << endl;
+		cout << "||            TRABALHO DE ESTRUTURA DE DADOS 2 - MENU DE ESCOLHAS              ||" << endl;
+		cout << "---------------------------------------------------------------------------------" << endl;
+		cout << "    BUSCA DE QUESTIONS " << tempBuscaStr << " - INSIRA O CODIGO DA OPCAO ESCOLHIDA  " << endl;
+		cout << "  Opcao 0: Voltar ao menu inicial" << endl;
+		cout << "  Opcao 1: Buscar " << tempBuscaStr << " em arvore AVL" << endl;
+		cout << "  Opcao 2: Buscar " << tempBuscaStr << " em arvore AVL Modificada (FB entre -3 e 3)" << endl;
+		cout << "  Opcao 3: Buscar " << tempBuscaStr << " em arvore Vermelho e Preta" << endl;
+		cout << "  Opcao 4: Buscar " << tempBuscaStr << " em arvore Splay" << endl;
+		cout << "  Opcao 5: Buscar " << tempBuscaStr << " em arvore B" << endl;
+		cout << "  Opcao 6: Buscar " << tempBuscaStr << " em arvore Treap (NossaArvoreDeBalanceamento)" << endl;
+		cout << "               ------------------------------------------  " << endl;
+		cout << "Opcao: ";
+		cin >> vars.entry;
+		cout << "---------------------------------------------------------------------------------" << endl;
+		switch (vars.entry)
+		{
+			case 0:
+				openMenu(vars);
+			case 1:
+				buscaAVL(vars, tempEscolhaBusca);
+				break;
+			case 2:
+				buscaAVLModificada(vars, tempEscolhaBusca);
+				break;
+			case 3:
+				buscaVermelhoPreta(vars, tempEscolhaBusca);
+				break;
+			case 4:
+				buscaSplay(vars, tempEscolhaBusca);
+				break;
+			case 5:
+				buscaB(vars, tempEscolhaBusca);
+				break;
+			case 6:
+				buscaNossaArvoreBalanc(vars, tempEscolhaBusca);
+				break;
+			default:
+				cout << "Opcao invalida. Tente novamente:" << endl;
+				busca(vars);
+		}
+	}
+
 }
 
 void geraAVL(Variables &vars)
@@ -915,7 +965,42 @@ void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado)
 	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
+void buscaAVL(Variables &vars, short &busca)
+{
 
+}
+
+void buscaAVLModificada(Variables &vars, short &busca)
+{
+
+}
+
+void buscaVermelhoPreta(Variables &vars, short &busca)
+{
+
+}
+
+void buscaSplay(Variables &vars, short &busca)
+{
+
+}
+
+void buscaB(Variables &vars, short &busca)
+{
+
+}
+
+void buscaNossaArvoreBalanc(Variables &vars, short &busca)
+{
+
+}
+
+/**
+ *
+ * @param vetQuestions
+ * @param n
+ * @return
+ */
 vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n)
 {
 	/**
@@ -948,6 +1033,11 @@ vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &
 	return vetQuestionsAleatorio;
 }
 
+/**
+ * Imprime um vector de elementos
+ * @tparam T Template, onde T é o tipo do elemento
+ * @param vector Vector de elemntos do Tipo T (Template) para impressão
+ */
 template<class T> void printVector(const vector<T> &vector)
 {
 	for (const auto &it : vector)
