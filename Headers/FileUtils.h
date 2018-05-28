@@ -31,12 +31,10 @@ class FileUtils
 	static void readFileQuestion(string path, vector<Question> &questionList);
 	static void readFileTag(string path, vector<Tag> &tagList);
 	static void readFileAnswer(string path, vector<Answer> &answerList);
-	static void writeToOutputFile(string text);
+	static void writeToOutputFile(const string &outputFileName, const string &text);
 	static void endProgram();
 	static void pauseScreen(bool continuar);
     static void showTop();
-
-    void showMenu();
 };
 
 #endif //TRABALHO_ED2_FILEUTILS_H

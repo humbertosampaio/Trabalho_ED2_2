@@ -18,7 +18,7 @@ class CompareCount
 		static clock_t timeStart;
 		static double runtime;
 		static bool runtimeCalc;
-		static unsigned long sizeVector;
+		static unsigned long qntdElemnts;
 
 	public:
 		static void initializeCounters(std::string name, unsigned long size);

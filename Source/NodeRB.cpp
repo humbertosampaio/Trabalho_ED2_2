@@ -2,7 +2,7 @@
 // Created by edson on 24/05/18.
 //
 
-#include "../../Trabalho_ED2_2/Headers/NodeRB.h"
+#include "../Headers/NodeRB.h"
 
 template<class T>
 NodeRB<T>::NodeRB(T data)

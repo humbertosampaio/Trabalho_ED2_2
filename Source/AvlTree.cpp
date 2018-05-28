@@ -27,132 +27,27 @@
 
 using namespace std;
 
-//AvlTree::AvlTree()
-//{
-//    raiz = nullptr;
-//}
-
-//template<class T>
-//AvlTree<T>::AvlTree()
-//{
-//	raiz = nullptr;
-//}
-
-//AvlTree::~AvlTree()
-//{
-//    clear();//raiz = clear(raiz);
-//}
-
-//template<class T>
-//AvlTree<T>::~AvlTree()
-//{
-//	clear();//raiz = clear(raiz);
-//}
-
-//void AvlTree::clear()
-//{
-//    raiz = clear(raiz);
-//}
-
 template<class T>
-AvlNode<T>* AvlTree<T>::clear(AvlNode<T>* raiz)
+AvlTree<T>::AvlTree()
 {
-	if (raiz != nullptr)
-	{
-		raiz->setLeft(clear(raiz->getLeft()));
-		raiz->setRight(clear(raiz->getRight()));
-		delete raiz;
-		raiz = nullptr;
-	}
-	return raiz;
+	modifiedAvl = false;
+	fatorBalanc = 1;
 }
 
 template<class T>
-void AvlTree<T>::clear()
+AvlTree<T>::AvlTree(bool modified)
 {
-	BinaryTree<T>::root = clear(BinaryTree<T>::root);
-}
-
-////void AvlTree::clear(AvlNode<T>*raiz)
-//AvlNode<T>* AvlTree::clear(AvlNode<T>*raiz)
-//{
-//	if(raiz != nullptr)
-//	{
-//		raiz->setEsq(clear(raiz->getEsq()));
-//		raiz->setDir(clear(raiz->getDir()));
-//		delete raiz;
-//		raiz = nullptr;
-//	}
-//	return raiz;
-//	/*if(raiz != nullptr)
-//	{
-//	libera(raiz->getEsq());
-//	clear(raiz->getDir());
-//	delete raiz;
-//	}*/
-//}
-/*
-template<class T>
-void AvlTree<T>::printByOrder(int caseOrder)
-{
-	switch (caseOrder)
+	if (modified)
 	{
-		case PRE_ORDER:
-			preOrder(BinaryTree<T>::root);
-			break;
-		case IN_ORDER:
-			inOrder(BinaryTree<T>::root);
-		case POST_ORDER:
-			postOrder(BinaryTree<T>::root);
-		default:
-			cout << "Nao existe esse codigo de operacao" << endl;
+		this->modifiedAvl = true;
+		fatorBalanc = 3;
 	}
-	cout << endl;
-}
-
-// A utility function to print preorder traversal
-// of the tree.
-// The function also prints height of every node
-template<class T>
-void AvlTree<T>::preOrder(AvlNode<T>* p)
-{
-	if (p != nullptr)
+	else
 	{
-		cout << p->getValue() << "(" << p->getHeight() << ") ";
-		preOrder(p->getLeft());
-		preOrder(p->getRight());
+		this->modifiedAvl = false;
+		fatorBalanc = 1;
 	}
 }
-
-
-// A utility function to print inorder traversal
-// of the tree.
-// The function also prints height of every node
-template<class T>
-void AvlTree<T>::inOrder(AvlNode<T>* p)
-{
-	if (p != nullptr)
-	{
-		inOrder(p->getLeft());
-		cout << p->getValue() << "(" << p->getHeight() << ") ";
-		inOrder(p->getRight());
-	}
-}
-
-
-// A utility function to print postorder traversal
-// of the tree.
-// The function also prints height of every node
-template<class T>
-void AvlTree<T>::postOrder(AvlNode<T>* p)
-{
-	if (p != nullptr)
-	{
-		postOrder(p->getLeft());
-		postOrder(p->getRight());
-		cout << p->getValue() << "(" << p->getHeight() << ") ";
-	}
-}*/
 
 template<class T>
 void AvlTree<T>::insert(T val)
@@ -243,22 +138,22 @@ AvlNode<T>* AvlTree<T>::auxRemove(AvlNode<T>* p, T val)
 
 
 template<class T>
-bool AvlTree<T>::busca(T val)
+bool AvlTree<T>::search(T val)
 {
-	return auxBusca(BinaryTree<T>::root, val);
+	return auxSearch(BinaryTree<T>::root, val);
 }
 
 template<class T>
-bool AvlTree<T>::auxBusca(AvlNode<T>* p, T val)
+bool AvlTree<T>::auxSearch(AvlNode<T>* p, T val)
 {
 	if (p == nullptr)
 		return false;
 	else if (p->getValue() == val)
 		return true;
 	else if (val < p->getValue())
-		return auxBusca(p->getLeft(), val);
+		return auxSearch(p->getLeft(), val);
 	else
-		return auxBusca(p->getRight(), val);
+		return auxSearch(p->getRight(), val);
 }
 
 
@@ -364,23 +259,5 @@ AvlNode<T>* AvlTree<T>::rightLeftRotate(AvlNode<T>*y)
 {
 	y->setRight(rightRotate(y->getRight()));
 	return leftRotate(y);
-}
-
-/**
- *
- * @tparam T
- * @param mod
- */
-template<class T> void AvlTree<T>::modifydAvl(bool mod)
-{
-    modifiedAvl = mod;
-    if(modifiedAvl)
-    {
-        fatorBalanc = 3;
-    }
-    else
-    {
-        fatorBalanc = 1;
-    }
 }
 
