@@ -18,7 +18,7 @@ template <class T> class TreapNode : public Node<T>
 	void setLeft(TreapNode<T>* node) { (TreapNode<T>*)(Node<T>::left = node); }
 	void setRight(TreapNode<T>* node) { (TreapNode<T>*)(Node<T>::right = node); }
 	int getPriority() { return this->priority; }
-	void setPriority(int newPriority) { this->priority = new newPriority; }
+	void setPriority(int newPriority) { this->priority = newPriority; }
 
 	private:
 	int priority;
