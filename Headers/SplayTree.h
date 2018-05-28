@@ -6,7 +6,6 @@
 
 template <class T> class SplayTree : public BinaryTree<T>
 {
-
 	private:
 	Node<T>* auxInsert(Node<T>* p, T key);
 	Node<T>* auxRemove(Node<T>* p, T key);

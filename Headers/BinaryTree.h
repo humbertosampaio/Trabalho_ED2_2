@@ -41,6 +41,4 @@ template <class T> class BinaryTree
 	void postOrder(Node<T> *p);
 };
 
-//#include "../Source/BinaryTree.cpp"
-
 #endif //TREES_BINARYTREE_H

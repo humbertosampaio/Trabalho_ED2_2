@@ -1,12 +1,16 @@
 #include <cstring>
+#include <vector>
+
 #include "Headers/BTree.h"
 #include "Headers/FileUtils.h"
+
 #include "Source/QuickSort.cpp"
 #include "Source/BinaryTree.cpp"
 #include "Source/SplayTree.cpp"
 #include "Source/AvlTree.cpp"
 #include "Source/RBTree.cpp"
 #include "Source/BTree.cpp"
+#include "Source/TreapTree.cpp"
 
 
 #define RANDOM_SEED std::chrono::system_clock::now().time_since_epoch().count()
@@ -187,28 +191,39 @@ void testEdson()
 
 void testHumberto()
 {
-	/*
-	AvlTree<int>* a = new AvlTree<int>();
-	a->insert(1);
-	a->insert(10);
-	a->insert(-40);
-	a->insert(30);
-	a->insert(-50);
-	a->print();
-	a->remove(-40);
-	a->print();
-	 */
+	TreapTree<int>* t = new TreapTree<int>();
+	vector<int> vec;
+	for (int i = 1; i <= 30; i++)
+		vec.push_back(i);
+	random_shuffle(vec.begin(), vec.end());
+	t->insert(vec);
+	//t->insert(1);
+	//t->insert(10);
+	//t->insert(-40);
+	//t->insert(30);
+	//t->insert(-50);
+	t->print();
+	
+	TreapNode<int>* no = t->search(30);
+	if(no != nullptr)
+		cout << no->getValue();
 
+	vector<int> vec2;
+	int start = 15, end = 30;
+	for (int i = start; i <= end; i++)
+		vec2.push_back(i);
+	random_shuffle(vec2.begin(), vec2.end());
+	t->remove(vec2);
 	cout << endl;
-	SplayTree<int>* b = new SplayTree<int>();
-	b->insert(1);
-	b->insert(10);
-	b->insert(-40);
-	b->insert(30);
-	b->insert(-50);
-	b->print();
-	b->remove(-40);
-	b->print();
+	t->printByOrder(IN_ORDER);
+
+	for (int i = 0; i <= end; i++)
+	{
+		TreapNode<int>* no2 = t->search(i);
+		if (no2 != nullptr)
+			cout << no2->getValue() << endl;
+	}
+
 	system("pause");
 }
 
@@ -232,13 +247,7 @@ int main(int argc, char** argv)
 	}
 	else if (argc == 4)
 	{
-		for (int i = 0; i < argc; i++)
-		{
-			string s = argv[i];
-			cout << s << endl;
-		}
-		//testHumberto();
-		system("pause");
+		testHumberto();
 		return 0;
 	}
 

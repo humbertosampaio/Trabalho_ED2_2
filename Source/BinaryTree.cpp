@@ -63,7 +63,10 @@ Node<T>* BinaryTree<T>::auxInsert(Node<T> *node, T value)
 template<class T>
 Node<T>* BinaryTree<T>::search(T value)
 {
-    return auxSearch(root, value);
+	Node<T>* node = auxSearch(root, value);
+	if (node == nullptr)
+		cout << "No de valor " + to_string(value) + " nao encontrado na arvore." << endl;
+	return node;
 }
 
 template<class T>
@@ -119,6 +122,7 @@ Node<T>* BinaryTree<T>::auxRemove(Node<T>* node, T value)
 {
     if(node == nullptr)
         return nullptr;
+
     else if(value < node->getValue())
         node->setLeft(auxRemove(node->getLeft(), value));
     else if(value > node->getValue())

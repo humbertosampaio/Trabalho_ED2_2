@@ -3,13 +3,6 @@
 
 #include "../Headers/AvlNode.h"
 
-//template<class T> AvlNode<T>::Node(T data)
-//{
-//	this->value = data;
-//	this->right = nullptr;
-//	this->left = nullptr;
-//}
-
 template<class T>
 int AvlNode<T>::getHeight()
 {
