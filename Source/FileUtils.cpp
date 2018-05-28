@@ -313,11 +313,11 @@ void FileUtils::showTop()
     cout << "         --------------------------------------------------" << endl;
 	pauseScreen(true);
     cout << "---------------------------- INFORMACOES ----------------------------" << endl;
-    cout << "-> Os arquivos de saida serão gerados no diretorio do executavel" << endl;
+    cout << "-> Os arquivos de saida serao gerados no diretorio do executavel" << endl;
 	cout << "-> Os arquivos de entrada precisam estar no diretorio do executavel" << endl;
     cout << "-> Para executar use: <./NomeDoExecutavelCompilado> <path>" << endl;
 	cout << "-> Caso nao passe a path por linha de comando, o diretorio onde esta" << endl;
-	cout << "   executavel sera considerado como path." << endl;
+	cout << "   o executavel sera considerado como path." << endl;
     cout << "-> Os arquivos usados (Answers.csv, Questions.csv, Tags.csv) precisam" << endl;
     cout << "   estar na pasta pythonquestions que fica no diretorio informado." << endl;
     cout << "---------------------------- INFORMACOES ----------------------------" << endl;
