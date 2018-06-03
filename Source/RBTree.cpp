@@ -102,16 +102,13 @@ void RBTree<T>::fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode)
         parent_newNode = newNode->getParent();
         grand_parent_newNode = newNode->getParent()->getParent();
 
-        /*  Case : A
-            Parent of newNode is left child of Grand-parent of newNode */
+        //pai de newNode eh filho a esquerda do avo de newNode
         if (parent_newNode == grand_parent_newNode->getLeft())
         {
 
             NodeRB<T> *uncle_newNode = grand_parent_newNode->getRight();
 
-            /* Case : 1
-               The uncle of newNode is also red
-               Only Recoloring required */
+            //tio vermelho, apenas recoloracao
             if (uncle_newNode != nullptr && uncle_newNode->isRed())
             {
                 grand_parent_newNode->setRed(true);
@@ -122,9 +119,6 @@ void RBTree<T>::fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode)
 
             else
             {
-                /* Case : 2
-                   newNode is right child of its parent
-                   Left-rotation required */
                 if (newNode == parent_newNode->getRight())
                 {
                     rotateLeft(root, parent_newNode);
@@ -132,23 +126,18 @@ void RBTree<T>::fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode)
                     parent_newNode = newNode->getParent();
                 }
 
-                /* Case : 3
-                   newNode is left child of its parent
-                   Right-rotation required */
                 rotateRight(root, grand_parent_newNode);
                 swapColors(parent_newNode, grand_parent_newNode);
                 newNode = parent_newNode;
             }
         }
-            /* Case : B
-               Parent of newNode is right child of Grand-parent of newNode */
+
+        //pai de newNode eh filho a direita do avo de newNode
         else
         {
             NodeRB<T> *uncle_newNode = grand_parent_newNode->getLeft();
 
-            /*  Case : 1
-                The uncle of newNode is also red
-                Only Recoloring required */
+            //tio vermelho, apenas recoloracao
             if ((uncle_newNode != nullptr) && (uncle_newNode->isRed()))
             {
                 grand_parent_newNode->setRed(true);
@@ -158,9 +147,6 @@ void RBTree<T>::fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode)
             }
             else
             {
-                /* Case : 2
-                   newNode is left child of its parent
-                   Right-rotation required */
                 if (newNode == parent_newNode->getLeft())
                 {
                     rotateRight(root, parent_newNode);
@@ -168,9 +154,6 @@ void RBTree<T>::fixInsert(NodeRB<T> *&root, NodeRB<T> *&newNode)
                     parent_newNode = newNode->getParent();
                 }
 
-                /* Case : 3
-                   newNode is right child of its parent
-                   Left-rotation required */
                 rotateLeft(root, grand_parent_newNode);
                 swapColors(parent_newNode, grand_parent_newNode);
                 newNode = parent_newNode;
@@ -272,7 +255,7 @@ NodeRB<T>* RBTree<T>::auxRemove(NodeRB<T>* node, T value)
 
             if (!nodeColor && !node->isRed())
                 fixRemove(node, parent);
-                //caso 1 em que o filho ou o no deletado eh vermelho, nao eh necessario chamar fixRemove
+                //caso em que o filho ou o no deletado eh vermelho, nao eh necessario chamar fixRemove
             else node->setRed(false);
         }
         else if((node->getLeft() == nullptr) || (node->getRight() == nullptr)) {
@@ -283,7 +266,7 @@ NodeRB<T>* RBTree<T>::auxRemove(NodeRB<T>* node, T value)
 
             if (!nodeColor && !node->isRed())
                 fixRemove(node, parent);
-            //caso 1 em que o filho ou o no deletado eh vermelho, nao eh necessario chamar fixRemove
+            //caso em que o filho ou o no deletado eh vermelho, nao eh necessario chamar fixRemove
             else node->setRed(false);
         }
         else
@@ -320,7 +303,7 @@ void RBTree<T>::removeCase1(NodeRB<T> *&node, NodeRB<T> *& parent)
         rotateRight(root, parent);
     }
         /* Case : B
-           Parent of newNode is right child of Grand-parent of newNode */
+           aso em que irmao de node eh filho a direita de parent*/
     else
     {
         NodeRB<T>* brother = parent->getRight();
