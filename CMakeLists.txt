@@ -19,7 +19,9 @@ add_executable(Trabalho_ED2_2
         Headers/Question.h
         Headers/RBTree.h
         Headers/SplayTree.h
-        Headers/Tag.h
+        Headers/Hash.h
+        Headers/HashSeparated.h
+        Headers/Vertex.h
         Source/BTree.cpp
         Source/CompareCount.cpp
         Source/NodeRB.cpp
@@ -31,5 +33,6 @@ add_executable(Trabalho_ED2_2
         Source/FileUtils.cpp
         Source/Question.cpp
         Source/SplayTree.cpp
-        Source/Tag.cpp
+        Source/Hash.cpp
+        Source/HashSeparated.cpp
         main.cpp)

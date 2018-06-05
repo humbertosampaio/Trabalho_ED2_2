@@ -29,8 +29,16 @@ bool Question::operator==(const Question &rhs) const {
     return questionId == rhs.questionId;
 }
 
+bool Question::operator==(const int &rhs) const {
+    return questionId == rhs;
+}
+
 bool Question::operator!=(const Question &rhs) const {
     return !(rhs == *this);
+}
+
+bool Question::operator!=(const int &rhs) const {
+    return rhs != questionId;
 }
 
 Question::Question(string *question)

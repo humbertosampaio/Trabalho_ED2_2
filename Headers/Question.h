@@ -33,8 +33,11 @@ public:
     friend ostream& operator <<(ostream &o, const Question &q);
 
     bool operator==(const Question &rhs) const;
+    bool operator==(const int &rhs) const;
+
 
     bool operator!=(const Question &rhs) const;
+    bool operator!=(const int &rhs) const;
 
     unsigned int getUserId() const;
 

@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include "Question.h"
 
 using namespace std;
 
@@ -21,10 +22,13 @@ public:
     Answer(string* answer);
 
     bool operator==(const Answer &rhs) const;
+    bool operator==(const Question &rhs) const;
 
     bool operator!=(const Answer &rhs) const;
+    bool operator!=(const int &rhs) const;
 
     bool operator<(const Answer &rhs) const;
+    bool operator<(const Question &rhs) const;
 
     bool operator>(const Answer &rhs) const;
 

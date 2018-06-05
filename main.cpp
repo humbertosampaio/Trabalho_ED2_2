@@ -1,8 +1,12 @@
 #include <cstring>
 #include <vector>
+#include <set>
 
 #include "Headers/CompareCount.h"
 #include "Headers/FileUtils.h"
+#include "Headers/Vertex.h"
+#include "Headers/Hash.h"
+#include "Headers/HashSeparated.h"
 
 #include "Source/QuickSort.cpp"
 #include "Source/BinaryTree.cpp"
@@ -12,15 +16,7 @@
 #include "Source/BTree.cpp"
 #include "Source/TreapTree.cpp"
 
-
 #define RANDOM_SEED std::chrono::system_clock::now().time_since_epoch().count()
-
-#define AVL_TREE 1
-#define AVL_MOD_TREE 2
-#define RB_TREE 3
-#define SPLAY_TREE 4
-#define B_TREE 5
-#define NOSSA_TREE 6
 
 #define BUSCA_MAIS_FREQ 2
 #define BUSCA_MENOS_FREQ 3
@@ -30,21 +26,31 @@
 
 using namespace std;
 
+
+/// Variaveis utilizadas em toda a main(), afim de concentrar em uma só estrutura
 struct Variables
 {
+	/// Vectors com os dados importados dos arquivos
 	vector<Question> questionVector;
 	vector<Answer> answerVector;
-	vector<Tag> tagVector;
-	vector<int> intVector;
+
+	/// Vector de frequencia de usuarios
+	vector<Vertex> usersFrequency;
 
 	string path;
 	string questionPath;
 	string answerPath;
-	string tagPath;
 
+	/// Usados para a leitura do arquivo de Entrada
 	vector<int> Ns;
 	unsigned long N;
+
+	/// Usados na escolha dos menus
 	short entry;
+	short entryBusca;
+
+	/// Identificador das arvores
+	string trees[7];
 
 	void entryPath(string _path)
 	{
@@ -63,7 +69,18 @@ struct Variables
 		}
 		questionPath = path + "pythonquestions/Questions.csv";
 		answerPath = path + "pythonquestions/Answers.csv";
-		tagPath = path + "pythonquestions/Tags.csv";
+
+		/**
+		 * Preenchendo identificador de arvores, para facilitar a impressão
+		 * Sendo que o indice é o mesmo da escolha do código do menu
+		 */
+		trees[0] = "Codigo Nao usado";
+		trees[1] = "Arvore AVL";
+		trees[2] = "Arvore AVL Modificada";
+		trees[3] = "Arvore Vermelho e Preta";
+		trees[4] = "Arvore Splay";
+        trees[5] = "Arvore B";
+        trees[6] = "Arvore Treap (Nossa arvore)";
 	}
 };
 
@@ -83,16 +100,36 @@ void remocaoVermelhoPreta(Variables &vars, bool ordenado);
 void remocaoSplay(Variables &vars, bool ordenado);
 void remocaoB(Variables &vars, bool ordenado);
 void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado);
-void buscaAVL(Variables &vars, short &busca);
-void buscaAVLModificada(Variables &vars, short &busca);
-void buscaVermelhoPreta(Variables &vars, short &busca);
-void buscaSplay(Variables &vars, short &busca);
-void buscaB(Variables &vars, short &busca);
-void buscaNossaArvoreBalanc(Variables &vars, short &busca);
+void geraUserIdsBusca(Variables &vars, set<int> &userIds, int N);
+void buscaUsersFrequency (Variables &vars);
+void buscaAVL(Variables &vars);
+void buscaAVLModificada(Variables &vars);
+void buscaVermelhoPreta(Variables &vars);
+void buscaSplay(Variables &vars);
+void buscaB(Variables &vars);
+void buscaNossaArvoreBalanc(Variables &vars);
 vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n);
 
 void testViniman()
 {
+
+    set<int> teste;
+    teste.insert(10);
+    teste.insert(2);
+    teste.insert(2);
+    teste.insert(12);
+    teste.emplace(50);
+    teste.emplace(50);
+    teste.emplace(3);
+
+    cout << "INICIO" << endl;
+    for(auto it : teste)
+    {
+        cout << " " << it;
+    }
+    cout << "FIM PRINT" << endl;
+
+
 	AvlTree<int> avl(true);
 	avl.insert(9);
 	avl.insert(8);
@@ -157,61 +194,6 @@ void testViniman()
 	avltree.printByLevel()*/
 }
 
-void testEdson()
-{
-	RBTree<int> rb;
-	int random;
-	for (int i = 0; i < 10; ++i)
-	{
-		random = rand() % 100;
-		cout << random << " ";
-		rb.insert(random);
-	}
-	cout << endl;
-	rb.print();
-	rb.remove(58);
-	rb.print();
-}
-
-void testHumberto()
-{
-	TreapTree<int>* t = new TreapTree<int>();
-	vector<int> vec;
-	for (int i = 1; i <= 30; i++)
-		vec.push_back(i);
-	random_shuffle(vec.begin(), vec.end());
-	t->insert(vec);
-	//t->insert(1);
-	//t->insert(10);
-	//t->insert(-40);
-	//t->insert(30);
-	//t->insert(-50);
-	t->print();
-	
-	TreapNode<int>* no = t->search(30);
-	if(no != nullptr)
-		cout << no->getValue();
-
-	vector<int> vec2;
-	int start = 15, end = 30;
-	for (int i = start; i <= end; i++)
-		vec2.push_back(i);
-	random_shuffle(vec2.begin(), vec2.end());
-	t->remove(vec2);
-	cout << endl;
-	t->printByOrder(IN_ORDER);
-
-	for (int i = 0; i <= end; i++)
-	{
-		TreapNode<int>* no2 = t->search(i);
-		if (no2 != nullptr)
-			cout << no2->getValue() << endl;
-	}
-
-	system("pause");
-}
-
-
 int main(int argc, char** argv)
 {
 	if (argc == 2 && !strcmp(argv[1], "test"))
@@ -219,32 +201,6 @@ int main(int argc, char** argv)
 		testViniman();
 		return 0;
 	}
-	else if (argc == 2 && !strcmp(argv[1], "testedson"))
-	{
-		testEdson();
-		return 0;
-	}
-	else if (argc == 2 && !strcmp(argv[1], "testluis"))
-	{
-		/*testLuis();*/
-		return 0;
-	}
-	else if (argc == 4)
-	{
-		testHumberto();
-		return 0;
-	}
-
-	//ofstream saida;
-	/*saida.open("saida.txt", ios::app);
-	saida << left << setw(12)<< left << "frequencia" << setw(12) << "Tags\n";
-	for (int i = 0; i < 10; ++i)
-		saida << left << setw(12) << 100 << setw(25) << 20 << endl;
-	saida << "\n\n\n";
-	saida << setw(12)<< left << "frequencia" << setw(12) << "UserIDs\n";
-	for (int i = 0;i < 10; ++i)
-		saida << left << setw(12)<< 100 << setw(12) << 20 << endl;
-	*/
 
 	FileUtils::showTop();
 
@@ -261,16 +217,24 @@ int main(int argc, char** argv)
 	}
 
 	Variables vars;
+	/// Se o quandtidade de argumentos é 1, nao foi informado o caminho, entao passa uma string vazia
+	/// Do contrário, passa o caminho passado por parametro
 	vars.entryPath(argc == 1 ? "" : argv[1]);
 
+	/**
+	 * Limpa os arquivos de saida, para nao conter lixos de outra execução
+	 * Caso queira salvar os resultados da saída, eh necessário copiar os arquivos
+	 */
 	FileUtils::clearFileContent("saidaInsercao.txt");
 	FileUtils::clearFileContent("saidaBusca.txt");
 	FileUtils::clearFileContent("saidaRemocao.txt");
 
+	/**a
+	 * Leitura dos arquivos de questões e de respostas.
+	 * O arquivo de Tags nao eh usado nessa parte do trabalho
+	 */
 	if (vars.questionVector.empty())
 		FileUtils::readFileQuestion(vars.questionPath, vars.questionVector);
-	if (vars.tagVector.empty())
-		FileUtils::readFileTag(vars.tagPath, vars.tagVector);
 	if (vars.answerVector.empty())
 		FileUtils::readFileAnswer(vars.answerPath, vars.answerVector);
 
@@ -279,7 +243,10 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-
+/**
+ * Menu de opções inicial
+ * @param vars: estrutura com todas as variáveis necessárias para a execução do programa
+ */
 void openMenu(Variables &vars)
 {
 	cout << "---------------------------------------------------------------------------------" << endl;
@@ -314,10 +281,10 @@ void openMenu(Variables &vars)
 			busca(vars);
 			break;
 		case 5:
-			remocao(vars, false);
+			remocao(vars, false); /// passa false por parametro, para nao ordenar
 			break;
 		case 6:
-			remocao(vars, true);
+			remocao(vars, true); /// passa true por parametro, para ordenar os valores a serem removidos
 		default:
 			cout << "Opcao invalida. Tente novamente:" << endl;
 			openMenu(vars);
@@ -338,7 +305,10 @@ void openMenu(Variables &vars)
 
 
 
-
+/**
+ * Menu de opções de Insercao para escolha da arvore
+ * @param vars: estrutura com todas as variáveis necessárias para a execução do programa
+ */
 void insercao(Variables &vars)
 {
 	vars.Ns = FileUtils::readInputFile("entradaInsercao.txt");
@@ -362,8 +332,11 @@ void insercao(Variables &vars)
 		cout << "---------------------------------------------------------------------------------" << endl;
 		switch (vars.entry)
 		{
+			case -1:
+			FileUtils::endProgram();
 			case 0:
 				openMenu(vars);
+				break;
 			case 1:
 				geraAVL(vars);
 				break;
@@ -389,6 +362,11 @@ void insercao(Variables &vars)
 	}
 }
 
+/**
+ * Menu de opções de Remocao para escolha da arvore
+ * @param vars: estrutura com todas as variáveis necessárias para a execução do programa
+ * @param ordenado: valor booleano, se for true ordena vetor de remocao
+ */
 void remocao(Variables &vars, bool ordenado)
 {
 	vars.Ns = FileUtils::readInputFile("entradaRemocao.txt");
@@ -439,16 +417,30 @@ void remocao(Variables &vars, bool ordenado)
 	}
 }
 
+
+/**
+ * Menu de opções de Busca para escolha da arvore
+ * @param vars: estrutura com todas as variáveis necessárias para a execução do programa
+ */
 void busca(Variables &vars)
 {
-	short tempEscolhaBusca = vars.entry;
+	/// Salva qual busca foi escolhida
+	vars.entryBusca = vars.entry;
 	string tempBuscaStr;
-	if(tempEscolhaBusca == BUSCA_MAIS_FREQ)
+	if(vars.entryBusca == BUSCA_MAIS_FREQ)
 		tempBuscaStr = "MAIS FREQUENTES";
-	if(tempEscolhaBusca == BUSCA_MENOS_FREQ)
+	if(vars.entryBusca == BUSCA_MENOS_FREQ)
 		tempBuscaStr = "MENOS FREQUENTES";
-	if(tempEscolhaBusca == BUSCA_ALEATORIOS)
+	if(vars.entryBusca == BUSCA_ALEATORIOS)
 		tempBuscaStr = "ALEATORIAS";
+
+	/// Se for busca pelos usuarios mais ou menos frequentes, chama a funcao que gera esse vector de frequencia
+	if(vars.entryBusca == BUSCA_MAIS_FREQ || vars.entryBusca == BUSCA_MENOS_FREQ)
+	{
+		vector<Vertex> sorteredUsers;
+		if(vars.usersFrequency.empty())
+            buscaUsersFrequency (vars); /// Funcao que gera o vector de frequencias ordenadas
+	}
 
 	vars.Ns = FileUtils::readInputFile("entradaBusca.txt");
 	vars.N = vars.Ns.size();
@@ -469,27 +461,50 @@ void busca(Variables &vars)
 		cout << "Opcao: ";
 		cin >> vars.entry;
 		cout << "---------------------------------------------------------------------------------" << endl;
-		switch (vars.entry)
+
+        /// Impressao no arquivo de saida
+
+		if(vars.entry != 0)
+		{
+			string str;
+			if (vars.entryBusca == BUSCA_MAIS_FREQ) {
+				str += "\n\n-----------------------------------------------------------------";
+				str += "\nBusca de Usuarios mais frequentes na " + vars.trees[vars.entry];
+				str += "\n-----------------------------------------------------------------";
+			} else if (vars.entryBusca == BUSCA_MENOS_FREQ) {
+				str += "\n\n-----------------------------------------------------------------";
+				str += "\nBusca de Usuarios menos frequentes na " + vars.trees[vars.entry];
+				str += "\n-----------------------------------------------------------------";
+			} else if (vars.entryBusca == BUSCA_ALEATORIOS) {
+				str += "\n\n-----------------------------------------------------------------";
+				str += "\nBusca de Usuarios aleatorios frequentes na " + vars.trees[vars.entry];
+				str += "\n-----------------------------------------------------------------";
+			}
+			FileUtils::writeToOutputFile("saidaBusca.txt", str);
+		}
+
+
+        switch (vars.entry)
 		{
 			case 0:
 				openMenu(vars);
 			case 1:
-				buscaAVL(vars, tempEscolhaBusca);
+				buscaAVL(vars);
 				break;
 			case 2:
-				buscaAVLModificada(vars, tempEscolhaBusca);
+				buscaAVLModificada(vars);
 				break;
 			case 3:
-				buscaVermelhoPreta(vars, tempEscolhaBusca);
+				buscaVermelhoPreta(vars);
 				break;
 			case 4:
-				buscaSplay(vars, tempEscolhaBusca);
+				buscaSplay(vars);
 				break;
 			case 5:
-				buscaB(vars, tempEscolhaBusca);
+				buscaB(vars);
 				break;
 			case 6:
-				buscaNossaArvoreBalanc(vars, tempEscolhaBusca);
+				buscaNossaArvoreBalanc(vars);
 				break;
 			default:
 				cout << "Opcao invalida. Tente novamente:" << endl;
@@ -499,6 +514,84 @@ void busca(Variables &vars)
 
 }
 
+/**
+ * Funcao que gera vector de frequencia de usuarios ativos em vars.usersFrequency
+ * @param vars: estrutura com todas as variáveis necessárias para a execução do programa
+ */
+void buscaUsersFrequency (Variables &vars)
+{
+	cout << "As frequencias de Users ainda nao foram geradas" << endl;
+	cout << "Frequencias sendo geradas..." << endl;
+	long N = vars.questionVector.size();
+	QuickSort::quickSort(vars.questionVector);
+	HashSeparated hashAnswer ((unsigned int)ceil(0.1*N), true);
+
+	QuickSort::quickSort(vars.answerVector);
+	QuickSort::quickSort(vars.questionVector);
+	auto itAnswer = vars.answerVector.begin();
+	auto itQuestion = vars.questionVector.begin();
+	for (const auto &it : vars.questionVector)
+	{
+		if (it == -1) continue;
+		for (; (*itAnswer) < it; ++itAnswer);
+		for (; (*itQuestion) < it; ++itQuestion);
+		if ((*itAnswer) == it && (*itAnswer) != -1)
+			hashAnswer.insert((*itAnswer).getUserId());
+		if ((*itQuestion) == it && (*itQuestion) != -1)
+			hashAnswer.insert((*itQuestion).getUserId());
+	}
+	hashAnswer.insertElementsVector(vars.usersFrequency);
+	QuickSort::quickSort(vars.usersFrequency);
+
+	// Códgio para Testar se esta funcionando
+	/*resetiosflags;
+    cout << setw(12) << left << "frequencia" << "UserIDs\n";
+    for (int i = 0; i < N && i < vars.usersFrequency.size() && i < 50; ++i) {
+        cout << left << setw(12) << vars.usersFrequency.at(i).frequence << setw(12) << vars.usersFrequency.at(i).value << endl;
+    }
+    resetiosflags;*/
+
+}
+
+/**
+ * Funcao que gera vetor de elementos para serem buscados nas arvores
+ * Gera elementos de acordo com o tipo de busca selecionado
+ * Tipos de busca: Por usuarios mais frequente, menos frequentes ou seleciona aleatoriamente
+ * @param vars: Usado em toda a main()
+ * @param userIds: UserIds selecionados
+ * @param N: Numero de UserIds para selecionar
+ */
+void geraUserIdsBusca(Variables &vars, set<int> &userIds, int N)
+{
+	cout << "Selecionando os " << N << " Users Ids." << endl;
+	if (vars.entryBusca == BUSCA_MAIS_FREQ)
+	{
+		for (int i = 0; i < vars.usersFrequency.size() && userIds.size() < N; ++i)
+		{
+			userIds.insert(vars.usersFrequency[i].value);
+		}
+	}
+	else if (vars.entryBusca == BUSCA_MENOS_FREQ)
+	{
+		for (int i = 1; i<= vars.usersFrequency.size() && userIds.size() < N; ++i)
+		{
+			userIds.insert(vars.usersFrequency[vars.usersFrequency.size()-i].value);
+		}
+	}
+	else if (vars.entryBusca == BUSCA_ALEATORIOS)
+	{
+		for (int i = 0; i < vars.questionVector.size() && userIds.size() < N; ++i)
+		{
+			userIds.insert(vars.questionVector[i].getUserId());
+		}
+	}
+}
+
+/**
+ * Funcao de insercao na arvore AVL
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
 void geraAVL(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
@@ -516,7 +609,7 @@ void geraAVL(Variables &vars)
 			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
 			AvlTree<Question> avlTreeQuestion;
 
-			CompareCount::initializeCounters("Árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::initializeCounters("Insercao na rvore AVL", static_cast<unsigned long>(vars.Ns[i]));
 			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
@@ -529,6 +622,14 @@ void geraAVL(Variables &vars)
 	FileUtils::writeToOutputFile("saidaInsercao.txt", str);
 }
 
+
+/**
+ * Funcao de insercao na arvore AVL Modificada
+ * Modificacao feita: Arvore esta balanceada quando -3=<FB<=3
+ * Arvore esta desbalanceada se esta fora do intervalo acima
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
 void geraAVLModificada(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
@@ -549,7 +650,7 @@ void geraAVLModificada(Variables &vars)
 			que seta a AVL com fator de balanceamento modificado*/
 			AvlTree<Question> avlModifiedTreeQuestion(true);
 
-			CompareCount::initializeCounters("Árvore AVL Modificada (fb normal=3)", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::initializeCounters("Insercao na Árvore AVL Modificada (fb normal=3)", static_cast<unsigned long>(vars.Ns[i]));
 			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
@@ -562,6 +663,11 @@ void geraAVLModificada(Variables &vars)
 	FileUtils::writeToOutputFile("saidaInsercao.txt", str);
 }
 
+/**
+ * Funcao de insercao na arvore Vermelho e Preta
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
 void geraVermelhoPreta(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
@@ -579,7 +685,7 @@ void geraVermelhoPreta(Variables &vars)
 			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
 			RBTree<Question> rbTreeQuestion;
 
-			CompareCount::initializeCounters("Árvore Vermelho e Preta", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::initializeCounters("Insercao na Árvore Vermelho e Preta", static_cast<unsigned long>(vars.Ns[i]));
 			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
@@ -592,6 +698,11 @@ void geraVermelhoPreta(Variables &vars)
 	FileUtils::writeToOutputFile("saidaInsercao.txt", str);
 }
 
+/**
+ * Funcao de insercao na arvore Splay
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
 void geraSplay(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
@@ -609,7 +720,7 @@ void geraSplay(Variables &vars)
 			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
 			SplayTree<Question> splayTreeQuestion;
 
-			CompareCount::initializeCounters("Árvore Splay", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::initializeCounters("Insercao na Árvore Splay", static_cast<unsigned long>(vars.Ns[i]));
 			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
@@ -622,6 +733,11 @@ void geraSplay(Variables &vars)
 	FileUtils::writeToOutputFile("saidaInsercao.txt", str);
 }
 
+/**
+ * Funcao de insercao na arvore B
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
 void geraB(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
@@ -639,7 +755,7 @@ void geraB(Variables &vars)
 			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
 			BTree<Question> bTreeQuestion;
 
-			CompareCount::initializeCounters("Árvore B", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::initializeCounters("Insercao na Árvore B", static_cast<unsigned long>(vars.Ns[i]));
 			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
@@ -652,6 +768,12 @@ void geraB(Variables &vars)
 	FileUtils::writeToOutputFile("saidaInsercao.txt", str);
 }
 
+
+/**
+ * Funcao de insercao na nossa arvore de balanceamento (Treap Tree)
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
 void geraNossaArvoreBalanc(Variables &vars)
 {
 	string str = "\n----------------------------------------------------";
@@ -669,7 +791,7 @@ void geraNossaArvoreBalanc(Variables &vars)
 			vector<Question> tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
 			TreapTree<Question> treapTreeQuestion;
 
-			CompareCount::initializeCounters("Árvore Treap", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::initializeCounters("Insercao na Árvore Treap", static_cast<unsigned long>(vars.Ns[i]));
 			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
@@ -682,10 +804,16 @@ void geraNossaArvoreBalanc(Variables &vars)
 	FileUtils::writeToOutputFile("saidaInsercao.txt", str);
 }
 
+
+/**
+ * Funcao de remocao na arvore AVL
+ * @param vars: Usado por toda a main() facilitando e concentrando tudo que eh usado em uma variavel só
+ * @param ordenado: true: ordenar vetor de elementos gerados para remocao, false: nao ordenar
+ */
 void remocaoAVL(Variables &vars, bool ordenado)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nRemocao em Arvore AVL";
+	str += "\nRemocao na Arvore AVL";
 	str += "\n----------------------------------------------------";
 
 	for (int i = 0; i < vars.N; i++)
@@ -707,17 +835,19 @@ void remocaoAVL(Variables &vars, bool ordenado)
 				avlTreeQuestion.insert(tempVectorQuestions[k]);
 			}
 
-			///Remocao de Questoes na arvore
+			/// Gera vector de questions para fazer a remocao
 			tempVectorQuestions.clear();
 			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
-			if(ordenado) {
+
+			/// Se for remocao ordenada, ordena o vector de Questoes que foi gerado
+			if(ordenado)
+			{
 				QuickSort::quickSort(tempVectorQuestions);
 			}
 
-			CompareCount::initializeCounters("Remocao em Árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
-			CompareCount::setTimeStart();
-
 			cout << "Removendo Questions da arvore...\n";
+			CompareCount::initializeCounters("Remocao na Árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
 				avlTreeQuestion.remove(tempVectorQuestions[k]);
@@ -729,10 +859,16 @@ void remocaoAVL(Variables &vars, bool ordenado)
 	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
+
+/**
+ * Funcao de remocao na arvore AVL Modificada
+ * @param vars: Usado por toda a main() facilitando e concentrando tudo que eh usado em uma variavel só
+ * @param ordenado: true: ordenar vetor de elementos gerados para remocao, false: nao ordenar
+ */
 void remocaoAVLModificada(Variables &vars, bool ordenado)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nRemocao em Arvore AVL Modificada";
+	str += "\nRemocao na Arvore AVL Modificada";
 	str += "\n----------------------------------------------------";
 
 	for (int i = 0; i < vars.N; i++)
@@ -754,17 +890,20 @@ void remocaoAVLModificada(Variables &vars, bool ordenado)
 				avlModifiedTreeQuestion.insert(tempVectorQuestions[k]);
 			}
 
-			///Remocao de Questoes na arvore
+
+			/// Gera vector de questions para fazer a remocao
 			tempVectorQuestions.clear();
 			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
-			if(ordenado) {
+
+			/// Se for remocao ordenada, ordena o vector de Questoes que foi gerado
+			if(ordenado)
+			{
 				QuickSort::quickSort(tempVectorQuestions);
 			}
 
-			CompareCount::initializeCounters("Remocao em Árvore AVL Modificada", static_cast<unsigned long>(vars.Ns[i]));
-			CompareCount::setTimeStart();
-
 			cout << "Removendo Questions da arvore...\n";
+			CompareCount::initializeCounters("Remocao na Árvore AVL Modificada (fb normal=3)", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
 				avlModifiedTreeQuestion.remove(tempVectorQuestions[k]);
@@ -776,10 +915,16 @@ void remocaoAVLModificada(Variables &vars, bool ordenado)
 	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
+
+/**
+ * Funcao de remocao na arvore Vermelho e Preta
+ * @param vars: Usado por toda a main() facilitando e concentrando tudo que eh usado em uma variavel só
+ * @param ordenado: true: ordenar vetor de elementos gerados para remocao, false: nao ordenar
+ */
 void remocaoVermelhoPreta(Variables &vars, bool ordenado)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nRemocao em Arvore Vermelho e Preta";
+	str += "\nRemocao na Arvore Vermelho e Preta";
 	str += "\n----------------------------------------------------";
 
 	for (int i = 0; i < vars.N; i++)
@@ -801,17 +946,19 @@ void remocaoVermelhoPreta(Variables &vars, bool ordenado)
 				rbTreeQuestion.insert(tempVectorQuestions[k]);
 			}
 
-			///Remocao de Questoes na arvore
+			/// Gera vector de questions para fazer a remocao
 			tempVectorQuestions.clear();
 			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
-			if(ordenado) {
+
+			/// Se for remocao ordenada, ordena o vector de Questoes que foi gerado
+			if(ordenado)
+			{
 				QuickSort::quickSort(tempVectorQuestions);
 			}
 
-			CompareCount::initializeCounters("Remocao em Árvore Vermelho e Preta", static_cast<unsigned long>(vars.Ns[i]));
-			CompareCount::setTimeStart();
-
 			cout << "Removendo Questions da arvore...\n";
+			CompareCount::initializeCounters("Remocao na Árvore Vermelho e Preta", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
 				rbTreeQuestion.remove(tempVectorQuestions[k]);
@@ -823,10 +970,16 @@ void remocaoVermelhoPreta(Variables &vars, bool ordenado)
 	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
+
+/**
+ * Funcao de remocao na arvore Splay
+ * @param vars: Usado por toda a main() facilitando e concentrando tudo que eh usado em uma variavel só
+ * @param ordenado: true: ordenar vetor de elementos gerados para remocao, false: nao ordenar
+ */
 void remocaoSplay(Variables &vars, bool ordenado)
 {
 	string str = "\n----------------------------------------------------";
-	str += "\nRemocao em Arvore Splay";
+	str += "\nRemocao na Arvore Splay";
 	str += "\n----------------------------------------------------";
 
 	for (int i = 0; i < vars.N; i++)
@@ -848,17 +1001,19 @@ void remocaoSplay(Variables &vars, bool ordenado)
 				splayTreeQuestion.insert(tempVectorQuestions[k]);
 			}
 
-			///Remocao de Questoes na arvore
+			/// Gera vector de questions para fazer a remocao
 			tempVectorQuestions.clear();
 			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
-			if(ordenado) {
+
+			/// Se for remocao ordenada, ordena o vector de Questoes que foi gerado
+			if(ordenado)
+			{
 				QuickSort::quickSort(tempVectorQuestions);
 			}
 
-			CompareCount::initializeCounters("Remocao em Árvore Splay", static_cast<unsigned long>(vars.Ns[i]));
-			CompareCount::setTimeStart();
-
 			cout << "Removendo Questions da arvore...\n";
+			CompareCount::initializeCounters("Remocao na Árvore Splay", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
 				splayTreeQuestion.remove(tempVectorQuestions[k]);
@@ -870,6 +1025,11 @@ void remocaoSplay(Variables &vars, bool ordenado)
 	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
+/**
+ * Funcao de remocao na arvore B
+ * @param vars: Usado por toda a main() facilitando e concentrando tudo que eh usado em uma variavel só
+ * @param ordenado: true: ordenar vetor de elementos gerados para remocao, false: nao ordenar
+ */
 void remocaoB(Variables &vars, bool ordenado)
 {
 	string str = "\n----------------------------------------------------";
@@ -895,17 +1055,19 @@ void remocaoB(Variables &vars, bool ordenado)
 				bTreeQuestion.insert(tempVectorQuestions[k]);
 			}
 
-			///Remocao de Questoes na arvore
+			/// Gera vector de questions para fazer a remocao
 			tempVectorQuestions.clear();
 			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
-			if(ordenado) {
+
+			/// Se for remocao ordenada, ordena o vector de Questoes que foi gerado
+			if(ordenado)
+			{
 				QuickSort::quickSort(tempVectorQuestions);
 			}
 
-			CompareCount::initializeCounters("Remocao em Árvore B", static_cast<unsigned long>(vars.Ns[i]));
-			CompareCount::setTimeStart();
-
 			cout << "Removendo Questions da arvore...\n";
+			CompareCount::initializeCounters("Remocao na Árvore B", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
 				bTreeQuestion.remove(tempVectorQuestions[k]);
@@ -917,6 +1079,11 @@ void remocaoB(Variables &vars, bool ordenado)
 	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
+/**
+ * Funcao de remocao na nossa arvore de balanceamento (Treap Tree)
+ * @param vars: Usado por toda a main() facilitando e concentrando tudo que eh usado em uma variavel só
+ * @param ordenado: true: ordenar vetor de elementos gerados para remocao, false: nao ordenar
+ */
 void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado)
 {
 	string str = "\n----------------------------------------------------";
@@ -942,18 +1109,19 @@ void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado)
 				treapTreeQuestion.insert(tempVectorQuestions[k]);
 			}
 
-			///Remocao de Questoes na arvore
+			/// Gera vector de questions para fazer a remocao
 			tempVectorQuestions.clear();
 			tempVectorQuestions = getVetQuestionsRand(vars.questionVector, vars.Ns[i]);
+
+			/// Se for remocao ordenada, ordena o vector de Questoes que foi gerado
 			if (ordenado)
 			{
 				QuickSort::quickSort(tempVectorQuestions);
 			}
 
-			CompareCount::initializeCounters("Remocao em Árvore Treap", static_cast<unsigned long>(vars.Ns[i]));
-			CompareCount::setTimeStart();
-
 			cout << "Removendo Questions da arvore...\n";
+			CompareCount::initializeCounters("Remocao na Árvore Treap", static_cast<unsigned long>(vars.Ns[i]));
+			CompareCount::setTimeStart();
 			for (int k = 0; k < vars.Ns[i]; k++)
 			{
 				treapTreeQuestion.remove(tempVectorQuestions[k]);
@@ -965,41 +1133,248 @@ void remocaoNossaArvoreBalanc(Variables &vars, bool ordenado)
 	FileUtils::writeToOutputFile("saidaRemocao.txt", str);
 }
 
-void buscaAVL(Variables &vars, short &busca)
-{
 
+/**
+ * Funcao de Busca na arvore AVL
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
+void buscaAVL(Variables &vars)
+{
+    set<int> userIds;
+	string str;
+
+    for(int i = 0; i < vars.N; ++i)
+    {
+    	/// Chama funcao para gerar user ids para a busca
+		geraUserIdsBusca(vars, userIds, vars.Ns[i]);
+
+		cout << "Inserindo na arvore " << vars.Ns[i] << " elementos." << endl;
+		AvlTree<int> avlTree;
+		for(auto it : userIds)
+		{
+			avlTree.insert(it);
+		}
+
+		cout << "Buscando na arvore de " << vars.Ns[i] << " elementos." << endl;
+		str += "\nBusca na Arvore de " + to_string(vars.Ns[i])+  " Users Ids Aleatórios:\n";
+
+		CompareCount::initializeCounters("Busca em árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+		CompareCount::setTimeStart();
+		for(auto it : userIds)
+		{
+			avlTree.search(it);
+		}
+		CompareCount::timeEnd();
+
+		str += CompareCount::getDataString();
+        userIds.clear();
+    }
+    FileUtils::writeToOutputFile("saidaBusca.txt", str);
 }
 
-void buscaAVLModificada(Variables &vars, short &busca)
+
+/**
+ * Funcao de Busca na arvore AVL Modificada
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
+void buscaAVLModificada(Variables &vars)
 {
+    set<int> userIds;
+    string str;
 
-}
+    for(int i = 0; i < vars.N; ++i)
+    {
+		/// Chama funcao para gerar user ids para a busca
+		geraUserIdsBusca(vars, userIds, vars.Ns[i]);
 
-void buscaVermelhoPreta(Variables &vars, short &busca)
-{
+        cout << "Inserindo na arvore " << vars.Ns[i] << " elementos." << endl;
+        AvlTree<int> modifiedAvlTree(true);
+        for(auto it : userIds)
+        {
+            modifiedAvlTree.insert(it);
+        }
 
-}
+        cout << "Buscando na arvore de " << vars.Ns[i] << " elementos." << endl;
+        str += "\nBusca na Arvore de " + to_string(vars.Ns[i])+  " Users Ids Aleatórios:\n";
 
-void buscaSplay(Variables &vars, short &busca)
-{
+        CompareCount::initializeCounters("Busca em árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+        CompareCount::setTimeStart();
+        for(auto it : userIds)
+        {
+            modifiedAvlTree.search(it);
+        }
+        CompareCount::timeEnd();
 
-}
-
-void buscaB(Variables &vars, short &busca)
-{
-
-}
-
-void buscaNossaArvoreBalanc(Variables &vars, short &busca)
-{
-
+        str += CompareCount::getDataString();
+        userIds.clear();
+    }
+    FileUtils::writeToOutputFile("saidaBusca.txt", str);
 }
 
 /**
- *
- * @param vetQuestions
- * @param n
- * @return
+ * Funcao de Busca na arvore Vermelho e Preta
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
+void buscaVermelhoPreta(Variables &vars)
+{
+    set<int> userIds;
+    string str;
+
+    for(int i = 0; i < vars.N; ++i)
+    {
+		/// Chama funcao para gerar user ids para a busca
+		geraUserIdsBusca(vars, userIds, vars.Ns[i]);
+
+        cout << "Inserindo na arvore " << vars.Ns[i] << " elementos." << endl;
+        RBTree<int> rbTree;
+        for(auto it : userIds)
+        {
+            rbTree.insert(it);
+        }
+
+        cout << "Buscando na arvore de " << vars.Ns[i] << " elementos." << endl;
+        str += "\nBusca na Arvore de " + to_string(vars.Ns[i])+  " Users Ids Aleatórios:\n";
+
+        CompareCount::initializeCounters("Busca em árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+        CompareCount::setTimeStart();
+        for(auto it : userIds)
+        {
+            rbTree.search(it);
+        }
+        CompareCount::timeEnd();
+
+        str += CompareCount::getDataString();
+        userIds.clear();
+    }
+    FileUtils::writeToOutputFile("saidaBusca.txt", str);
+}
+
+/**
+ * Funcao de Busca na arvore Splay
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
+void buscaSplay(Variables &vars)
+{
+    set<int> userIds;
+    string str;
+
+    for(int i = 0; i < vars.N; ++i)
+    {
+		/// Chama funcao para gerar user ids para a busca
+		geraUserIdsBusca(vars, userIds, vars.Ns[i]);
+
+        cout << "Inserindo na arvore " << vars.Ns[i] << " elementos." << endl;
+        SplayTree<int> splayTree;
+        for(auto it : userIds)
+        {
+            splayTree.insert(it);
+        }
+
+        cout << "Buscando na arvore de " << vars.Ns[i] << " elementos." << endl;
+        str += "\nBusca na Arvore de " + to_string(vars.Ns[i])+  " Users Ids Aleatórios:\n";
+
+        CompareCount::initializeCounters("Busca em árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+        CompareCount::setTimeStart();
+        for(auto it : userIds)
+        {
+            splayTree.search(it);
+        }
+        CompareCount::timeEnd();
+
+        str += CompareCount::getDataString();
+        userIds.clear();
+    }
+    FileUtils::writeToOutputFile("saidaBusca.txt", str);
+}
+
+
+/**
+ * Funcao de Busca na arvore B
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
+void buscaB(Variables &vars)
+{
+    set<int> userIds;
+    string str;
+
+    for(int i = 0; i < vars.N; ++i)
+    {
+		/// Chama funcao para gerar user ids para a busca
+		geraUserIdsBusca(vars, userIds, vars.Ns[i]);
+
+        cout << "Inserindo na arvore " << vars.Ns[i] << " elementos." << endl;
+        BTree<int> bTree;
+        for(auto it : userIds)
+        {
+            bTree.insert(it);
+        }
+
+        cout << "Buscando na arvore de " << vars.Ns[i] << " elementos." << endl;
+        str += "\nBusca na Arvore de " + to_string(vars.Ns[i])+  " Users Ids Aleatórios:\n";
+
+        CompareCount::initializeCounters("Busca em árvore AVL", static_cast<unsigned long>(vars.Ns[i]));
+        CompareCount::setTimeStart();
+        for(auto it : userIds)
+        {
+            bTree.search(it);
+        }
+        CompareCount::timeEnd();
+
+        str += CompareCount::getDataString();
+        userIds.clear();
+    }
+    FileUtils::writeToOutputFile("saidaBusca.txt", str);
+}
+
+/**
+ * Funcao de Busca na nossa arvore de balancemento (Treap Tree)
+ * @param vars: Usado por toda a main() facilitando e concentrando
+ * tudo que eh usado em uma variavel só
+ */
+void buscaNossaArvoreBalanc(Variables &vars)
+{
+    set<int> userIds;
+    string str;
+
+    for(int i = 0; i < vars.N; ++i)
+    {
+		/// Chama funcao para gerar user ids para a busca
+		geraUserIdsBusca(vars, userIds, vars.Ns[i]);
+
+        cout << "Inserindo na arvore " << vars.Ns[i] << " elementos." << endl;
+        TreapTree<int> treapTree;
+        for(auto it : userIds)
+        {
+            treapTree.insert(it);
+        }
+
+        cout << "Buscando na arvore de " << vars.Ns[i] << " elementos." << endl;
+        str += "\nBusca na Arvore de " + to_string(vars.Ns[i])+  " Users Ids Aleatórios:\n";
+
+        CompareCount::initializeCounters("Busca em árvore Treap", static_cast<unsigned long>(vars.Ns[i]));
+        CompareCount::setTimeStart();
+        for(auto it : userIds)
+        {
+            treapTree.search(it);
+        }
+        CompareCount::timeEnd();
+
+        str += CompareCount::getDataString();
+        userIds.clear();
+    }
+    FileUtils::writeToOutputFile("saidaBusca.txt", str);
+}
+
+/**
+ * Funcao que gera vetor de Questions Aleatorios e retorna
+ * @param vetQuestions: Vetor com todas as questions importadas do arquivos Questions.csv
+ * @param n: numero de questions a inserir no vector
+ * @return: vector de n Questions
  */
 vector<Question> getVetQuestionsRand(vector<Question> &vetQuestions, const int &n)
 {

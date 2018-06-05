@@ -19,11 +19,11 @@ template <class T> class BTree
 	BTree<T>();
 	~BTree<T>();
 	void insert(T valor);
-	bool find(T valor);
+	bool search(T valor);
 	NodeB<T>* insereNo(NodeB<T> *no, T valor);
 	void insereRecursivo(NodeB<T> *no, T valor);
 	T split(NodeB<T> *n, NodeB<T> **novoNo);
-	NodeB<T>* find(NodeB<T> *n, T valor);
+	NodeB<T>* search(NodeB<T> *n, T valor);
 	NodeB<T>** getRaiz();
 	void imprime();
 	void imprimePorNivel(NodeB<T> *p, int nivel);

@@ -15,17 +15,17 @@ template <class T> class AvlTree : public BinaryTree<T>
 	AvlTree<T>(bool modified);
 	void insert(T val);
 	void remove(T val);
-	bool search(T val);
+	bool search(T &val);
 
 	private:
 	/// Variáveis para setar a AVL Modificada
-	unsigned short fatorBalanc;
+	unsigned short fatorBalancNormal;
 	bool modifiedAvl;
 
 	AvlNode<T>* getRoot() { return (AvlNode<T>*)BinaryTree<T>::root; }
 	AvlNode<T>* auxInsere(AvlNode<T> *no, T val);
 	AvlNode<T>* auxRemove(AvlNode<T> *no, T val);
-	bool auxSearch(AvlNode<T> *p, T val);
+	bool auxSearch(AvlNode<T> *p, T &val);
 	AvlNode<T>* leftRotate(AvlNode<T> *raiz);
 	AvlNode<T>* rightRotate(AvlNode<T> *y);
 	AvlNode<T>* rightLeftRotate(AvlNode<T> *y);

@@ -102,6 +102,8 @@ void FileUtils::readFileQuestion(string path, vector<Question> &questionList)
 	exit(0);
 }
 
+// Comentado, pois nessa parte não usamos o arquivos de Tags
+/*
 void FileUtils::readFileTag(string path, vector<Tag> &tagList)
 {
 	fstream file;
@@ -150,6 +152,7 @@ void FileUtils::readFileTag(string path, vector<Tag> &tagList)
     }
 	cout << "falha na leitura do arquivo!" << endl;
 }
+*/
 
 void FileUtils::readFileAnswer(string path, vector<Answer> &answerList)
 {

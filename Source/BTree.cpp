@@ -2,6 +2,7 @@
 // Created by viniman on 5/26/18.
 //
 
+#include <CompareCount.h>
 #include "../Headers/BTree.h"
 
 using namespace std;
@@ -37,23 +38,30 @@ NodeB<T>** BTree<T>::getRaiz(){
 template<class T>
 void BTree<T>::insert(T valor)
 {
+    CompareCount::incrementComparison();
     if(raiz == nullptr) ///Se a arvore esta vazia, cria a raiz
     {
         raiz = new NodeB<T>();
+        CompareCount::incrementCopia();
         insereNo(raiz, valor);
     }
     else
     {
         insereRecursivo(raiz, valor);
+        CompareCount::incrementComparison();
         if(raiz->tamanho == MAX+1) ///Verifica se a raiz tem overflow, para fazer o split
         {
+            CompareCount::incrementCopia();
+            CompareCount::incrementCopia();
             NodeB<T>* novoNo;
             NodeB<T>* auxRaiz = new NodeB<T>();
+            CompareCount::incrementCopia();
             T s = split(raiz, &novoNo);
             auxRaiz->filho[0] = raiz;
             auxRaiz->filho[1] = novoNo;
             auxRaiz->chave[0] = s;
             auxRaiz->tamanho++; ///Aumenta a quantidade de chaves na pagina
+            CompareCount::incrementCopia();
             raiz = auxRaiz;
         }
     }
@@ -86,14 +94,22 @@ void BTree<T>::insereRecursivo(NodeB<T>* no, T valor)
     int k = 0;
     while(k < no->tamanho){///Encontra a posicao do vetor de chaves que 'valor' sera inserido
 
+        CompareCount::incrementComparison();
         if(no->chave[k] < valor)
             k++;
         else if(no->chave[k] == valor)
+        {
+            CompareCount::incrementComparison();
             return; //nao insere elementos de chaves iguais
+        }
         else
+        {
+            CompareCount::incrementComparison();
             break;
+        }
 
     }
+    CompareCount::incrementComparison();
     if(no->filho[k]== nullptr){///Verifica se o no eh folha, se for, insere, caso contrario continua descendo na arvore
 
         insereNo(no,valor);
@@ -101,9 +117,12 @@ void BTree<T>::insereRecursivo(NodeB<T>* no, T valor)
     }else{
 
         insereRecursivo(no->filho[k], valor);
+        CompareCount::incrementComparison();
         if(no->filho[k]->tamanho == MAX+1) ///Verifica se houve overflow na insersao
         {
 
+            CompareCount::incrementCopia();
+            CompareCount::incrementCopia();
             NodeB<T>* novoNo;///No que sera criado no split
             T s = split(no->filho[k],&novoNo);///Valor de retorno do split, ou seja, o valor que será adicionado no 'no'
             insereNo(no,s);
@@ -117,34 +136,41 @@ void BTree<T>::insereRecursivo(NodeB<T>* no, T valor)
 }
 
 template<class T>
-bool BTree<T>::find(T valor)
+bool BTree<T>::search(T valor)
 {
-    return find(raiz, valor) != nullptr;
-    //return buscar(valor, raiz) != nullptr;
+    CompareCount::incrementComparison();
+    return search(raiz, valor) != nullptr;
 }
 
 template<class T>
-NodeB<T>* BTree<T>::find(NodeB<T>* n, T valor)
+NodeB<T>* BTree<T>::search(NodeB<T> *n, T valor)
 {
     NodeB<T>* aux;
+    CompareCount::incrementCopia();
 
+    CompareCount::incrementComparison();
     if(n == nullptr)
     {
         return nullptr;
     }
-    else //if(n->chave[k] == valor) ///Verifica se o valor esta no No 'n', se estiver, retona a posicao de memoria de 'n', caso nao esteja, verifica nos seus filhos
+    else ///Verifica se o valor esta no No 'n', se estiver, retona a posicao de memoria de 'n', caso nao esteja, verifica nos seus filhos
     {
+        CompareCount::incrementComparison();
         if(n->getPos(valor) != -1)
             return n;
     }
 
+
     for (int i = 0; i <= n->tamanho; i++)
     {//Verifica se encontra o valor nos filhos de 'n'
-        aux = find(n->filho[i], valor);
+        aux = search(n->filho[i], valor);
+        CompareCount::incrementComparison();
+        CompareCount::incrementComparison();
         if (aux != nullptr) {
             return aux;
         }
     }
+    CompareCount::incrementComparison();
 
     return nullptr;
 
@@ -153,6 +179,7 @@ NodeB<T>* BTree<T>::find(NodeB<T>* n, T valor)
 template<class T>
 T BTree<T>::split(NodeB<T>* n, NodeB<T>** novoNo)///Reparte os valores de 'n' para o 'novoNo' e retorna o valor mediano;
 {
+    CompareCount::incrementCopia();
     *novoNo = new NodeB<T>();
 
     int MID = MIN; /// Encontra o valor mediano no No 'n'

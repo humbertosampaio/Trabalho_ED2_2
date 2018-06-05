@@ -17,12 +17,24 @@ bool Answer::operator==(const Answer &rhs) const {
     return questionId == rhs.questionId;
 }
 
+bool Answer::operator==(const Question &rhs) const {
+    return questionId == rhs.getQuestionId();
+}
+
 bool Answer::operator!=(const Answer &rhs) const {
     return !(rhs == *this);
 }
 
+bool Answer::operator!=(const int &rhs) const {
+    return rhs != questionId;
+}
+
 bool Answer::operator<(const Answer &rhs) const {
     return questionId < rhs.questionId;
+}
+
+bool Answer::operator<(const Question &rhs) const {
+    return questionId < rhs.getQuestionId();
 }
 
 bool Answer::operator>(const Answer &rhs) const {

@@ -18,7 +18,7 @@ template <class T> class BinaryTree
 	~BinaryTree<T>();
 	void clear();
 	virtual void insert(T value);
-	Node<T>* search(T value);
+	Node<T>* search(T &value);
     virtual void remove(T value);
 	void print();
 	void printByOrder(int caseOrder);
